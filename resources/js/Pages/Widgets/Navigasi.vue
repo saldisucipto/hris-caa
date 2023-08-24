@@ -11,14 +11,14 @@
                 </button>
             </div>
             <Link
-                href="/dashboard"
+                href="/hris"
                 class="text-bold rounded-md text-gray-700 hover:text-primary-color"
             >
                 <div
                     class="flex gap-2 px-3 py-2"
                     :class="{
                         'hover: text-white hover: text-bold bg-blue-400 rounded-md':
-                            $page.url === '/dashboard',
+                            $page.url === '/hris',
                     }"
                 >
                     <i class="fas fa-columns my-auto"></i>
@@ -32,19 +32,19 @@
                 <h1>MAIN MENU</h1>
             </div>
             <Link
-                href="/dashboard/master"
+                href="/hris/karyawan"
                 class="text-bold rounded-md text-gray-700 hover:text-primary-color"
             >
                 <div
                     class="flex gap-2 px-3 py-2"
                     :class="{
                         'hover: text-white hover: text-bold bg-blue-400 rounded-md':
-                            $page.url === '/dashboard/master' ||
-                            $page.url.startsWith('/dashboard/master'),
+                            $page.url === '/hris/karyawan' ||
+                            $page.url.startsWith('/hris/karyawan'),
                     }"
                 >
                     <i class="fas fa-server my-auto"></i>
-                    <span>Master Data</span>
+                    <span>Data Karyawan</span>
                 </div>
             </Link>
             <Link

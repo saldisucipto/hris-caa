@@ -5,6 +5,7 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Data\KonfigurasiDataController;
 use App\Http\Controllers\Data\MasterDataController;
 use App\Http\Controllers\FrontPages\FrontPagesControlller;
+use App\Http\Controllers\Hris\HrisController;
 use Illuminate\Support\Facades\Route;
 use App\Models\AnalisisPengunjung;
 use Illuminate\Support\Facades\DB;
@@ -15,6 +16,21 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 
 // end auth route
+
+// HRIS
+Route::prefix('/hris')->middleware('auth')->group(function () {
+    // Front Pages Routes
+    Route::get('/', [HrisController::class, 'index'])->name('indexHris');
+
+    Route::prefix('/karyawan')->middleware('auth')->group(function () {
+        Route::get('/', [HrisController::class, 'karyawan']);
+
+        Route::get('/data-karyawan', [HrisController::class, 'dataKaryawan']);
+    });
+});
+
+
+
 
 // dashboard
 Route::prefix('/dashboard')->middleware('auth')->group(function () {
@@ -157,8 +173,6 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
 });
 
 
-// Front Pages Routes
-Route::get('/', [FrontPagesControlller::class, 'index'])->name('index');
 
 
 // Produk Route

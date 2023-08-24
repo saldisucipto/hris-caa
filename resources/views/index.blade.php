@@ -1,31 +1,22 @@
-@extends('layouts.front')
+<!DOCTYPE html>
+<html>
 
-@section('konten')
-    <div class="w-full ">
-        {{-- Slider Components --}}
-        @include('components.slider')
-        {{-- End Slider Components --}}
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    {{-- add font awesome --}}
+    <script src="https://kit.fontawesome.com/7a249e95a6.js" crossorigin="anonymous"></script>
+    <link rel="shortcut icon" href="/assets/img/logo.png" type="image/x-icon">
 
-        <div class="flex flex-col gap-20  mt-16 mb-20 ">
-            {{-- Components Panel Components --}}
-            <livewire:panel />
-            {{-- END Componets --}}
+    {{-- inertia js --}}
+    @vite('resources/js/app.js')
+    {{-- tailwind css --}}
+    @vite('resources/css/app.css')
+    @inertiaHead
+</head>
 
-            {{-- introduction --}}
-            <livewire:intro-section />
-            {{-- End Introduction --}}
+<body>
+    @inertia
+</body>
 
-            {{-- Produk Showcahse --}}
-            <livewire:produk-showcase />
-            {{-- End Produk Showcase --}}
-
-            {{-- Blog News Showcahse --}}
-            <livewire:blog-news-showcase />
-            {{-- End Blog News Showcase --}}
-
-            {{-- Customer Session Showcahse --}}
-            <livewire:customer-showcase />
-            {{-- End Customer Session Showcase --}}
-        </div>
-    </div>
-@endsection
+</html>

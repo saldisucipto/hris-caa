@@ -3,7 +3,7 @@
         class="h-20 bg-bg-primary hover:bg-blue-400 hover:drop-shadow-lg rounded-md drop-shadow-sm flex flex-col justify-center text-gray-700 hover:rounded-tr-full hover:text-white"
     >
         <Link
-            :href="'/dashboard/master/' + linkTujuan"
+            :href="'/hris/karyawan/' + linkTujuan"
             class="mx-auto flex gap-3 justify-center hape:text-left hape:mx-4 hape:w-full hape:justify-start"
         >
             <i :class="'fas ' + iconData + ' fa-2x my-auto'"></i>
