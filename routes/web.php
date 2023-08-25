@@ -26,6 +26,7 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
         Route::get('/', [HrisController::class, 'karyawan']);
 
         Route::get('/data-karyawan', [HrisController::class, 'dataKaryawan']);
+        Route::match(['get', 'post'], '/import-data-karyawan', [HrisController::class, 'importDataKaryawan']);
     });
 });
 

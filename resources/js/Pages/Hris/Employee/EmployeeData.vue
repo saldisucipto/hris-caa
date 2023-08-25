@@ -26,7 +26,7 @@
         </div>
         <!-- End Message -->
         <!-- Main menu  -->
-        <div class="mx-3 flex flex-col">
+        <div class="mx-3 flex flex-col gap-1">
             <div
                 class="h-12 bg-slate-100 rounded-lg flex flex-col justify-center"
             >
@@ -35,18 +35,30 @@
                         <input
                             type="search"
                             name=""
-                            placeholder="Search Produk"
+                            placeholder="Cari Karyawan"
                             id=""
                             class="rounded-lg px-2 py-2 focus:outline-none text-sm w-96"
                         />
                     </div>
-                    <div class="flex gap-3">
-                        <button
-                            class="bg-blue-400 my-auto text-xs rounded-lg text-white py-2 px-3 hover:bg-white hover:text-blue-400 hover:drop-shadow-sm"
-                        >
-                            <i class="fas fa-plus"></i>
-                            Input Data Karyawan Baru
-                        </button>
+                    <div class="flex gap-3 justify-end my-auto">
+                        <div>
+                            <a
+                                href="/hris/karyawan/buat-data-karyawan"
+                                class="bg-blue-400 my-auto text-xs rounded-lg text-white py-2 px-3 hover:bg-white hover:text-blue-400 hover:drop-shadow-sm"
+                            >
+                                <i class="fas fa-plus"></i>
+                                Input Data Karyawan Baru
+                            </a>
+                        </div>
+                        <div>
+                            <a
+                                href="/hris/karyawan/import-data-karyawan"
+                                class="bg-yellow-400 my-auto text-xs rounded-lg text-white py-2 px-3 hover:bg-white hover:text-blue-400 hover:drop-shadow-sm"
+                            >
+                                <i class="fas fa-plus"></i>
+                                Import Data Karyawan
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -55,41 +67,39 @@
                     class="w-full divide-y-2 divide-gray-200 bg-white text-sm"
                 >
                     <thead
-                        class="ltr:text-left rtl:text-right text-left overflow-hidden"
+                        class="ltr:text-left rtl:text-right text-left overflow-hidden bg-slate-100"
                     >
                         <tr>
                             <th
-                                class="whitespace-nowrap py-2 font-medium text-gray-900"
-                            ></th>
-                            <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                Produk
+                                Nama
                             </th>
                             <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                Harga Produk
+                                NIK (Karyawan)
                             </th>
                             <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                Kategori
+                                Jabatan
                             </th>
                             <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                Brand
+                                Perusahaan
                             </th>
                             <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                Stok
+                                Status Karyawan
                             </th>
+
                             <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                Kondisi
+                                NIK (KTP)
                             </th>
 
                             <th
@@ -104,61 +114,40 @@
                         <tr v-if="this.employee.data == []"></tr>
                         <tr
                             v-else
-                            v-for="itemProduk in employee.data"
+                            v-for="employee in employee.data"
                             class="hover:bg-gray-200"
                         >
-                            <td>
-                                <input
-                                    type="checkbox"
-                                    @change="deleteCheck(itemProduk.id)"
-                                />
+                            <td
+                                class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
+                            >
+                                <p class="uppercase">
+                                    {{ employee.nama_employee }}
+                                </p>
                             </td>
                             <td
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                {{ itemProduk.nama_produk }}
+                                {{ employee.nik_karyawan_employee }}
                             </td>
                             <td
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                {{ rpCurency(itemProduk.harga_produk, "Rp.") }}
+                                {{ employee.jabatan_employee }}
                             </td>
                             <td
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                {{ itemProduk.kategori_produk.nama_kategori }}
+                                {{ employee.id_company }}
                             </td>
                             <td
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                {{ itemProduk.brand_produk.nama_brand }}
+                                {{ employee.status_employee }}
                             </td>
                             <td
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                {{
-                                    itemProduk.stok_produk +
-                                    " " +
-                                    itemProduk.satuan_produk
-                                }}
-                            </td>
-                            <td
-                                v-if="itemProduk.kondisi_produk === 'NEW'"
-                                class="whitespace-nowrap px-4 py-2 font-medium text-white"
-                            >
-                                <span
-                                    class="bg-green-600 p-2 rounded-lg text-sm"
-                                    >New</span
-                                >
-                            </td>
-                            <td
-                                v-else
-                                class="whitespace-nowrap px-4 py-2 font-medium text-white"
-                            >
-                                <span
-                                    class="bg-yellow-600 p-2 rounded-lg text-sm"
-                                    >Second</span
-                                >
+                                {{ employee.nik_employee }}
                             </td>
 
                             <td

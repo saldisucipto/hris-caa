@@ -42,6 +42,14 @@ class FileProcess
         }
     }
 
+    // uploadDokumne
+    public function uploadDokumen()
+    {
+        $namaFile =  time() . '-' . Str::slug($this->namaFile) . '.' . $this->fileData->getClientOriginalExtension();
+        Storage::putFileAs('public/dokumen/' . $this->dirFile, $this->fileData, $namaFile);
+        return $namaFile;
+    }
+
     // update foto
     public function updateFoto(string $fileSebelumnya)
     {
