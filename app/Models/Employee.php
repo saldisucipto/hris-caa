@@ -12,4 +12,9 @@ class Employee extends Model
     protected $table = 'employee';
 
     protected $guarded = [];
+
+    public function perusahaan()
+    {
+        return $this->hasOne(Company::class, 'id', 'id_company');
+    }
 }

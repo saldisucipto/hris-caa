@@ -37,9 +37,26 @@
                             name=""
                             placeholder="Cari Karyawan"
                             id=""
-                            class="rounded-lg px-2 py-2 focus:outline-none text-sm w-96"
+                            class="rounded-lg px-2 py-2 focus:outline-none text-sm w-80"
                         />
                     </div>
+                    <select
+                        class="text-sm focus:outline-none rounded-lg px-2"
+                        name="id_company"
+                        v-model="id_company"
+                        @change="changeFilter"
+                    >
+                        <option class="text-sm" value="1">
+                            PT. CIPTA ANEKA AIR
+                        </option>
+                        <option class="text-sm" value="2">
+                            PT. CIPTA ANEKA SERVIS
+                        </option>
+                        <option class="text-sm" value="3">
+                            PT. RAGAM ADI CATUR ESAJAYA
+                        </option>
+                    </select>
+
                     <div class="flex gap-3 justify-end my-auto">
                         <div>
                             <a
@@ -62,6 +79,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="overflow-x-auto">
                 <table
                     class="w-full divide-y-2 divide-gray-200 bg-white text-sm"
@@ -137,10 +155,10 @@
                             <td
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                {{ employee.id_company }}
+                                {{ employee.perusahaan.nama_company }}
                             </td>
                             <td
-                                class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
+                                class="whitespace-nowrap uppercase px-4 py-2 font-medium text-gray-900"
                             >
                                 {{ employee.status_employee }}
                             </td>
@@ -151,45 +169,68 @@
                             </td>
 
                             <td
-                                class="whitespace-nowrap py-2 flex gap-1 justify-center"
+                                class="relative whitespace-nowrap py-2 flex gap-1 justify-center"
                             >
-                                <button
-                                    @click="showData(itemProduk.id)"
-                                    class="inline-block rounded bg-blue-400 px-4 py-2 text-xs font-medium text-white hover:bg-blue-700"
-                                >
-                                    View
+                                <button @click="modalOption(employee.id)">
+                                    <i class="fas fa-ellipsis-v"></i>
                                 </button>
-                                <button
-                                    @click="showModal(itemProduk.id)"
-                                    class="inline-block rounded bg-yellow-400 px-4 py-2 text-xs font-medium text-white hover:bg-yellow-700"
+
+                                <div
+                                    v-if="employee.id == selectId"
+                                    class="absolute rounded-md -top-5 right-10 bg-white drop-shadow-lg"
                                 >
-                                    Edit
-                                </button>
-                                <button
-                                    @click="showModalDelete(itemProduk.id)"
-                                    class="inline-block rounded bg-red-400 px-4 py-2 text-xs font-medium text-white hover:bg-red-700"
-                                >
-                                    Delete
-                                </button>
+                                    <div class="p-3 flex justify-start">
+                                        <div
+                                            class="flex flex-col gap-2 text-xs text-left"
+                                        >
+                                            <button
+                                                class="text-left px-2 py-1 rounded-md hover:bg-yellow-600 hover:text-white"
+                                            >
+                                                <i class="fas fa-eye"></i>
+                                                Details
+                                            </button>
+                                            <button
+                                                class="text-left px-2 py-1 rounded-md hover:bg-blue-600 hover:text-white"
+                                            >
+                                                <i class="fas fa-pen"></i>
+                                                Update
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
-            <div class="flex justify-left gap-3 py-3">
-                <div v-for="link in employee.links">
-                    <a v-if="link.url !== null" :href="link.url">
-                        <div
-                            :class="
-                                link.active
-                                    ? 'bg-blue-500 hover:bg-blue-700 border-none'
-                                    : ''
-                            "
-                            class="px-4 py-1 rounded-md text-xs hover:bg-blue-700 bg-blue-400 text-white font-semibold"
-                            v-html="link.label"
-                        ></div>
-                    </a>
+            <div class="flex justify-between gap-3 py-3">
+                <div class="flex justify-left gap-2">
+                    <div v-for="link in employee.links">
+                        <a v-if="link.url !== null" :href="link.url">
+                            <div
+                                :class="
+                                    link.active
+                                        ? 'bg-blue-500 hover:bg-blue-700 border-none'
+                                        : ''
+                                "
+                                class="px-4 py-1 rounded-md text-xs hover:bg-blue-700 bg-blue-400 text-white font-semibold"
+                                v-html="link.label"
+                            ></div>
+                        </a>
+                    </div>
                 </div>
+                <form method="get">
+                    <select
+                        class="text-sm px-2 py-1 focus:outline-none border rounded-lg border-gray-700"
+                        v-model="this.count_data"
+                        id=""
+                        @change="changeCount"
+                    >
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="30">30</option>
+                    </select>
+                </form>
             </div>
         </div>
         <!-- End Main Menu -->
@@ -201,13 +242,24 @@ import Navigasi from "../../Widgets/Navigasi.vue";
 import DashboardLayout from "../../Layouts/DashboardLayout.vue";
 import TitlePages from "../../Widgets/TitlePages.vue";
 import CardMasterData from "../../Widgets/CardMasterData.vue";
-import { Link } from "@inertiajs/vue3";
+import { Link, router, useForm } from "@inertiajs/vue3";
 
 export default {
     data() {
-        return {};
+        return {
+            id_company: this.filter.perusahaan,
+            count_data: this.filter.countDisplay,
+            selectId: null,
+        };
     },
-    setup() {},
+    setup() {
+        const form = useForm({
+            id_company: "",
+            countData: "",
+        });
+
+        return { form };
+    },
     components: {
         Navigasi,
         DashboardLayout,
@@ -218,8 +270,25 @@ export default {
     props: {
         chart: Object,
         employee: Object,
+        filter: Object,
     },
     layout: DashboardLayout,
-    methods: {},
+    methods: {
+        changeFilter() {
+            this.form.id_company = this.id_company;
+            router.get("/hris/karyawan/data-karyawan/", this.form);
+        },
+        changeCount() {
+            this.form.countData = this.count_data;
+            this.form.id_company = this.id_company;
+            router.get("/hris/karyawan/data-karyawan/", this.form);
+        },
+        modalOption(id) {
+            this.selectId = id;
+            setTimeout(() => {
+                this.selectId = null;
+            }, 4000);
+        },
+    },
 };
 </script>

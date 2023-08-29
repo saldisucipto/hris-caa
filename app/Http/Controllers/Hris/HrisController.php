@@ -7,11 +7,13 @@ use Inertia\Inertia;
 use App\Http\Charts\VisitorCharts;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Data\MasterDataController;
+use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Utils\FileProcess;
 use App\Imports\EmployeeImport;
 use App\Models\Bank;
 use App\Models\Company;
 use App\Models\Employee;
+use App\Models\GradeEmployee;
 use App\Models\LastEdu;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
@@ -33,10 +35,28 @@ class HrisController extends Controller
         return Inertia::render('Hris/Employee/Employee');
     }
 
-    // show employee managamente
-    public function dataKaryawan()
+    // buat data karyawan
+    public function buatDataKaryawan(CreateEmployeeRequest $create)
     {
-        return Inertia::render('Hris/Employee/EmployeeData', ['employee' => MasterDataController::ambilSemuaData(new Employee())]);
+        if ($create->isMethod('GET')) {
+            $company = Company::get();
+            $grade = GradeEmployee::get();
+            $bank = Bank::get();
+            return Inertia::render('Hris/Employee/CreateEmployee', ['company' => $company, 'grade' => $grade, 'bank' => $bank]);
+        } elseif ($create->isMethod('POST')) {
+            dd($create->all());
+        }
+    }
+
+    // show employee managamente
+    public function dataKaryawan(Request $request)
+    {
+        $filter = [
+            'perusahaan' => $request->id_company ? $request->id_company : 1,
+            'countDisplay' =>  $request->countData ? $request->countData : 10,
+        ];
+        $karyawan = Employee::where('id_company', $filter['perusahaan'])->with(['perusahaan'])->paginate($filter['countDisplay']);
+        return Inertia::render('Hris/Employee/EmployeeData', ['employee' => $karyawan, 'filter' => $filter]);
     }
 
     // import data karyawan
