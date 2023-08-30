@@ -34,7 +34,7 @@
                                         placeholder="Nama Karyawan"
                                         required
                                         autofocus
-                                        v-model="nama_employee"
+                                        v-model="form.nama_employee"
                                     />
                                     <div
                                         class="text-xs px-1 text-red-600"
@@ -49,15 +49,11 @@
                                         >Pilih Perusahaan</label
                                     >
                                     <select
+                                        v-model="form.id_company"
                                         name=""
                                         id=""
                                         class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                     >
-                                        <select
-                                            v-model="id_company"
-                                            name=""
-                                            id=""
-                                        ></select>
                                         <option
                                             v-for="companyData in this.company"
                                             :value="companyData.id"
@@ -81,7 +77,7 @@
                                     <input
                                         type="text"
                                         class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
-                                        v-model="jabatan_employee"
+                                        v-model="form.jabatan_employee"
                                         placeholder="Jabatan / Posisi Karyawan"
                                         required
                                     />
@@ -104,7 +100,7 @@
                                         class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                         placeholder="NIK KTP"
                                         required
-                                        v-model="nik_employee"
+                                        v-model="form.nik_employee"
                                     />
                                     <div
                                         class="text-xs px-1 text-red-600"
@@ -123,7 +119,7 @@
                                         class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                         placeholder="No Kartu Keluarga"
                                         required
-                                        v-model="no_kk_employee"
+                                        v-model="form.no_kk_employee"
                                     />
                                     <div
                                         class="text-xs px-1 text-red-600"
@@ -146,7 +142,7 @@
                                         class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                         placeholder="Jl. Maju Bukan Mundur"
                                         required
-                                        v-model="alamat_employee"
+                                        v-model="form.alamat_employee"
                                     />
                                     <div
                                         class="text-xs px-1 text-red-600"
@@ -170,7 +166,9 @@
                                                 placeholder="RT"
                                                 maxlength="3"
                                                 required
-                                                v-model="alamat_rt_employee"
+                                                v-model="
+                                                    form.alamat_rt_employee
+                                                "
                                             />
                                             <div
                                                 class="text-xs px-1 text-red-600"
@@ -192,7 +190,9 @@
                                                 placeholder="RW"
                                                 maxlength="3"
                                                 required
-                                                v-model="alamat_rw_employee"
+                                                v-model="
+                                                    form.alamat_rw_employee
+                                                "
                                             />
                                             <div
                                                 class="text-xs px-1 text-red-600"
@@ -215,7 +215,7 @@
                                                 maxlength="8"
                                                 required
                                                 v-model="
-                                                    alamat_kode_pos_employee
+                                                    form.alamat_kode_pos_employee
                                                 "
                                             />
                                             <div
@@ -244,7 +244,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Kelurahan"
                                             required
-                                            v-model="alamat_kel_employee"
+                                            v-model="form.alamat_kel_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -265,7 +265,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Kecamatan"
                                             required
-                                            v-model="alamat_kec_employee"
+                                            v-model="form.alamat_kec_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -286,7 +286,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Kabupaten"
                                             required
-                                            v-model="alamat_kab_employee"
+                                            v-model="form.alamat_kab_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -307,7 +307,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Provinsi"
                                             required
-                                            v-model="alamat_prov_employee"
+                                            v-model="form.alamat_prov_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -330,7 +330,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Agama"
                                             required
-                                            v-model="agama_employee"
+                                            v-model="form.agama_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -352,7 +352,7 @@
                                             placeholder="Phone"
                                             required
                                             maxlength="14"
-                                            v-model="phone_employee"
+                                            v-model="form.phone_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -373,7 +373,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Email"
                                             required
-                                            v-model="email_employee"
+                                            v-model="form.email_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -390,15 +390,11 @@
                                             >Grade Karyawan</label
                                         >
                                         <select
+                                            v-model="form.id_grade"
                                             name=""
                                             id=""
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                         >
-                                            <select
-                                                v-model="id_grade"
-                                                name=""
-                                                id=""
-                                            ></select>
                                             <option
                                                 v-for="gradeData in this.grade"
                                                 :value="gradeData.id"
@@ -425,7 +421,9 @@
                                         >
                                         <select
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
-                                            v-model="jenis_kelamin_employee"
+                                            v-model="
+                                                form.jenis_kelamin_employee
+                                            "
                                             id=""
                                         >
                                             <option value="laki-laki">
@@ -455,7 +453,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Tempat Lahir"
                                             required
-                                            v-model="tempat_lahir_employee"
+                                            v-model="form.tempat_lahir_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -477,7 +475,9 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Tanggal Lahir"
                                             required
-                                            v-model="tanggal_lahir_employee"
+                                            v-model="
+                                                form.tanggal_lahir_employee
+                                            "
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -500,7 +500,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="NIK Karyawan - Kantor"
                                             required
-                                            v-model="nik_karyawan_employee"
+                                            v-model="form.nik_karyawan_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -518,14 +518,10 @@
                                         >
                                         <select
                                             name=""
+                                            v-model="form.status_employee"
                                             id=""
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                         >
-                                            <select
-                                                v-model="status_employee"
-                                                name=""
-                                                id=""
-                                            ></select>
                                             <option value="pkwt">PKWT</option>
                                             <option value="pkwtt">PKWTT</option>
                                         </select>
@@ -549,7 +545,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Kontrak Awal"
                                             required
-                                            v-model="masa_kontrak_awal"
+                                            v-model="form.masa_kontrak_awal"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -570,7 +566,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Kontrak aKHIR"
                                             required
-                                            v-model="masa_kontrak_akhir"
+                                            v-model="form.masa_kontrak_akhir"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -593,7 +589,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Nomer BPJS Kesehatan"
                                             required
-                                            v-model="bpjs_ks_employee"
+                                            v-model="form.bpjs_ks_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -614,7 +610,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Nomer BPJS Kesehatan"
                                             required
-                                            v-model="bpjs_tk_employee"
+                                            v-model="form.bpjs_tk_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -635,7 +631,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Nomer BPJS Kesehatan"
                                             required
-                                            v-model="npwp_employee"
+                                            v-model="form.npwp_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -652,15 +648,11 @@
                                             >Bank</label
                                         >
                                         <select
+                                            v-model="form.id_bank"
                                             name=""
                                             id=""
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                         >
-                                            <select
-                                                v-model="id_bank"
-                                                name=""
-                                                id=""
-                                            ></select>
                                             <option
                                                 v-for="bankData in this.bank"
                                                 :value="bankData.id"
@@ -688,7 +680,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Nomer Rekening"
                                             required
-                                            v-model="bank_account_employee"
+                                            v-model="form.bank_account_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -711,7 +703,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Nama Ibu Kandung"
                                             required
-                                            v-model="nama_ibu_employee"
+                                            v-model="form.nama_ibu_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -730,16 +722,12 @@
                                         >
                                         <select
                                             name=""
+                                            v-model="
+                                                form.status_pernikahan_employee
+                                            "
                                             id=""
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                         >
-                                            <select
-                                                v-model="
-                                                    status_pernikahan_employee
-                                                "
-                                                name=""
-                                                id=""
-                                            ></select>
                                             <option value="lajang">
                                                 Lajang
                                             </option>
@@ -771,7 +759,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Jumlah Anak"
                                             required
-                                            v-model="jumlah_anak_employee"
+                                            v-model="form.jumlah_anak_employee"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -792,7 +780,7 @@
                                             class="drop-shadow-sm px-3 py-1 border rounded-md focus:outline-none text-md"
                                             placeholder="Pendidikan Terakhir"
                                             required
-                                            v-model="last_edu"
+                                            v-model="form.last_edu"
                                         />
                                         <div
                                             class="text-xs px-1 text-red-600"
@@ -809,7 +797,7 @@
                             class="bg-blue-400 hover:bg-blue-700 text-white py-1 rounded-md drop-shadow-sm"
                             type="submit"
                         >
-                            Save Data
+                            Buat Data
                         </button>
                     </form>
                 </div>
@@ -828,40 +816,7 @@ import { router, useForm } from "@inertiajs/vue3";
 
 export default {
     data() {
-        return {
-            fileExcel: null,
-            nama_employee: "",
-            id_company: null,
-            jabatan_employee: "",
-            nik_employee: "",
-            no_kk_employee: "",
-            alamat_employee: "",
-            alamat_rt_employee: "",
-            alamat_rw_employee: "",
-            alamat_kode_pos_employee: "",
-            alamat_kel_employee: "",
-            alamat_kec_employee: "",
-            agama_employee: "",
-            phone_employee: "",
-            email_employee: "",
-            id_grade: "",
-            tanggal_masuk_employee: "",
-            jenis_kelamin_employee: "laki-laki",
-            tempat_lahir_employee: "",
-            tanggal_lahir_employee: "",
-            nik_karyawan_employee: "",
-            status_employee: "",
-            masa_kontrak_awal: "",
-            masa_kontrak_akhir: "",
-            bpjs_ks_employee: "",
-            bpjs_tk_employee: "",
-            npwp_employee: "",
-            npwp_employee: "",
-            id_bank: "",
-            bank_account_employee: "",
-            nama_ibu_employee: "",
-            jumlah_anak_employee: "",
-        };
+        return {};
     },
     components: {
         Navigasi,
@@ -878,42 +833,46 @@ export default {
     setup() {
         const form = useForm({
             nama_employee: null,
-            id_company: null,
+            id_company: 1,
             jabatan_employee: null,
             nik_employee: null,
             no_kk_employee: null,
+            alamat_employee: null,
             alamat_rt_employee: null,
             alamat_rw_employee: null,
             alamat_kode_pos_employee: null,
             alamat_kel_employee: null,
             alamat_kec_employee: null,
+            alamat_kab_employee: null,
+            alamat_prov_employee: null,
             agama_employee: null,
             phone_employee: null,
             email_employee: null,
-            id_grade: null,
+            id_grade: 1,
             tanggal_masuk_employee: null,
-            jenis_kelamin_employee: null,
+            jenis_kelamin_employee: "laki-laki",
             tempat_lahir_employee: null,
             tanggal_lahir_employee: null,
             nik_karyawan_employee: null,
-            status_employee: null,
+            status_employee: "pkwt",
             masa_kontrak_awal: null,
             masa_kontrak_akhir: null,
             bpjs_ks_employee: null,
             bpjs_tk_employee: null,
             npwp_employee: null,
             npwp_employee: null,
-            id_bank: null,
+            id_bank: 1,
             bank_account_employee: null,
             nama_ibu_employee: null,
             jumlah_anak_employee: null,
+            status_pernikahan_employee: "lajang",
         });
         return { form };
     },
 
     methods: {
-        importForm() {
-            this.form.fileData = this.fileExcel;
+        createFormEmployee() {
+            this.form.tanggal_masuk_employee = this.form.masa_kontrak_awal;
             router.post("/hris/karyawan/buat-data-karyawan", this.form, {
                 preserveScroll: true,
                 onSuccess: () => {

@@ -23,6 +23,9 @@ class CreateEmployeeRequest extends FormRequest
     {
         return [
             //
+            'nama_employee' => 'required|string|max:200',
+            'id_company' => 'required|max:1',
+            'jabatan_employee' => 'required|string'
         ];
     }
 }

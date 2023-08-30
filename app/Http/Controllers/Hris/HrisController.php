@@ -36,7 +36,7 @@ class HrisController extends Controller
     }
 
     // buat data karyawan
-    public function buatDataKaryawan(CreateEmployeeRequest $create)
+    public function buatDataKaryawan(Request $create)
     {
         if ($create->isMethod('GET')) {
             $company = Company::get();
@@ -44,7 +44,75 @@ class HrisController extends Controller
             $bank = Bank::get();
             return Inertia::render('Hris/Employee/CreateEmployee', ['company' => $company, 'grade' => $grade, 'bank' => $bank]);
         } elseif ($create->isMethod('POST')) {
-            dd($create->all());
+            $create->validate([
+                'nama_employee' => 'required|string|max:200',
+                'id_company' => 'numeric|max:1',
+                'jabatan_employee' => 'required|string',
+                'nik_employee' => 'required|string',
+                'no_kk_employee' => 'required|string',
+                'alamat_employee' => 'required|string',
+                'alamat_rt_employee' => 'required|string|max:3',
+                'alamat_rw_employee' => 'required|string|max:3',
+                'alamat_kode_pos_employee' => 'required|string|max:10',
+                'alamat_kel_employee' => 'required|string',
+                'alamat_kec_employee' => 'required|string',
+                'alamat_prov_employee' => 'required|string',
+                'agama_employee' => 'required|string',
+                'phone_employee' => 'required|string',
+                'email_employee' => 'required|string|email',
+                'id_grade' => 'required|numeric|max:1',
+                'tanggal_masuk_employee' => 'nullable|date',
+                'jenis_kelamin_employee' => 'required|string',
+                'tempat_lahir_employee' => 'required|string',
+                'tanggal_lahir_employee' => 'required|date',
+                'nik_karyawan_employee' => 'required|string',
+                'status_employee' => 'required|string',
+                'masa_kontrak_awal' => 'nullable|date',
+                'masa_kontrak_akhir' => 'nullable|date',
+                'bpjs_ks_employee' => 'nullable|string',
+                'bpjs_tk_employee' => 'nullable|string',
+                'npwp_employee' => 'nullable|string',
+                'id_bank' => 'numeric|max:1'
+            ]);
+            $dataEmployee = $create->all();
+            $employee = new Employee();
+
+            $employee->nama_employee = $dataEmployee['nama_employee'];
+            $employee->id_company = $dataEmployee['id_company'];
+            $employee->jabatan_employee = $dataEmployee['jabatan_employee'];
+            $employee->nik_employee = $dataEmployee['nik_employee'];
+            $employee->no_kk_employee = $dataEmployee['no_kk_employee'];
+            $employee->alamat_employee = $dataEmployee['alamat_employee'];
+            $employee->alamat_rt_employee = $dataEmployee['alamat_rt_employee'];
+            $employee->alamat_rw_employee = $dataEmployee['alamat_rw_employee'];
+            $employee->alamat_kode_pos_employee = $dataEmployee['alamat_kode_pos_employee'];
+            $employee->alamat_kel_employee = $dataEmployee['alamat_kel_employee'];
+            $employee->alamat_kec_employee = $dataEmployee['alamat_kec_employee'];
+            $employee->alamat_kab_employee = $dataEmployee['alamat_kab_employee'];
+            $employee->alamat_prov_employee = $dataEmployee['alamat_prov_employee'];
+            $employee->agama_employee = $dataEmployee['agama_employee'];
+            $employee->phone_employee = $dataEmployee['phone_employee'];
+            $employee->email_employee = $dataEmployee['email_employee'];
+            $employee->id_grade = $dataEmployee['id_grade'];
+            $employee->tanggal_masuk_employee = $dataEmployee['tanggal_masuk_employee'];
+            $employee->jenis_kelamin_employee = $dataEmployee['jenis_kelamin_employee'];
+            $employee->tempat_lahir_employee = $dataEmployee['tempat_lahir_employee'];
+            $employee->tanggal_lahir_employee = $dataEmployee['tanggal_lahir_employee'];
+            $employee->nik_karyawan_employee = $dataEmployee['nik_karyawan_employee'];
+            $employee->status_employee = $dataEmployee['status_employee'];
+            $employee->masa_kontrak_awal = $dataEmployee['masa_kontrak_awal'];
+            $employee->masa_kontrak_akhir = $dataEmployee['masa_kontrak_akhir'];
+            $employee->bpjs_ks_employee = $dataEmployee['bpjs_ks_employee'];
+            $employee->bpjs_tk_employee = $dataEmployee['bpjs_tk_employee'];
+            $employee->npwp_employee = $dataEmployee['npwp_employee'];
+            $employee->id_bank = $dataEmployee['id_bank'];
+            $employee->bank_account_employee = $dataEmployee['bank_account_employee'];
+            $employee->nama_ibu_employee = $dataEmployee['nama_ibu_employee'];
+            $employee->jumlah_anak_employee = $dataEmployee['jumlah_anak_employee'];
+            $employee->status_pernikahan_employee = $dataEmployee['status_pernikahan_employee'];
+            $employee->last_edu = $dataEmployee['last_edu'];
+            $employee->save();
+            return redirect('/hris/karyawan/data-karyawan')->with('message', 'Berhasil Input Data Karyawan' . $create->input('nama_employee'));
         }
     }
 
