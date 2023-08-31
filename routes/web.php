@@ -28,6 +28,8 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
         Route::get('/data-karyawan', [HrisController::class, 'dataKaryawan']);
         Route::match(['get', 'post'], '/import-data-karyawan', [HrisController::class, 'importDataKaryawan']);
         Route::match(['get', 'post'], '/buat-data-karyawan', [HrisController::class, 'buatDataKaryawan']);
+
+        Route::get('/show-karyawan/{id}', [HrisController::class, 'detailKaryawan']);
     });
 });
 

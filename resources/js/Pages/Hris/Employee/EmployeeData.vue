@@ -38,6 +38,8 @@
                             placeholder="Cari Karyawan"
                             id=""
                             class="rounded-lg px-2 py-2 focus:outline-none text-sm w-80"
+                            v-model="form.namaKaryawan"
+                            @keyup="searchData"
                         />
                     </div>
                     <select
@@ -91,6 +93,11 @@
                             <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
+                                No
+                            </th>
+                            <th
+                                class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
+                            >
                                 Nama
                             </th>
                             <th
@@ -115,12 +122,6 @@
                             </th>
 
                             <th
-                                class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
-                            >
-                                NIK (KTP)
-                            </th>
-
-                            <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center"
                             >
                                 Action
@@ -132,9 +133,14 @@
                         <tr v-if="this.employee.data == []"></tr>
                         <tr
                             v-else
-                            v-for="employee in employee.data"
+                            v-for="(employee, index) in employee.data"
                             class="hover:bg-gray-200"
                         >
+                            <td
+                                class="whitespace-nowrap px-4 py-2 font-bold text-gray-900"
+                            >
+                                {{ ++index }}
+                            </td>
                             <td
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
@@ -158,14 +164,9 @@
                                 {{ employee.perusahaan.nama_company }}
                             </td>
                             <td
-                                class="whitespace-nowrap uppercase px-4 py-2 font-medium text-gray-900"
+                                class="whitespace-nowrap uppercase px-4 py-2 font-medium text-center text-gray-900"
                             >
                                 {{ employee.status_employee }}
-                            </td>
-                            <td
-                                class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
-                            >
-                                {{ employee.nik_employee }}
                             </td>
 
                             <td
@@ -183,12 +184,16 @@
                                         <div
                                             class="flex flex-col gap-2 text-xs text-left"
                                         >
-                                            <button
+                                            <a
+                                                :href="
+                                                    '/hris/karyawan/show-karyawan/' +
+                                                    employee.id
+                                                "
                                                 class="text-left px-2 py-1 rounded-md hover:bg-yellow-600 hover:text-white"
                                             >
                                                 <i class="fas fa-eye"></i>
                                                 Details
-                                            </button>
+                                            </a>
                                             <button
                                                 class="text-left px-2 py-1 rounded-md hover:bg-blue-600 hover:text-white"
                                             >
@@ -226,9 +231,9 @@
                         id=""
                         @change="changeCount"
                     >
-                        <option value="10">10</option>
-                        <option value="20">20</option>
+                        <option value="15">15</option>
                         <option value="30">30</option>
+                        <option value="45">45</option>
                     </select>
                 </form>
             </div>
@@ -256,6 +261,7 @@ export default {
         const form = useForm({
             id_company: "",
             countData: "",
+            namaKaryawan: "",
         });
 
         return { form };
@@ -280,6 +286,10 @@ export default {
         },
         changeCount() {
             this.form.countData = this.count_data;
+            this.form.id_company = this.id_company;
+            router.get("/hris/karyawan/data-karyawan/", this.form);
+        },
+        searchData() {
             this.form.id_company = this.id_company;
             router.get("/hris/karyawan/data-karyawan/", this.form);
         },

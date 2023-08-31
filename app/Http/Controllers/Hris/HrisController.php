@@ -121,9 +121,10 @@ class HrisController extends Controller
     {
         $filter = [
             'perusahaan' => $request->id_company ? $request->id_company : 1,
-            'countDisplay' =>  $request->countData ? $request->countData : 10,
+            'countDisplay' =>  $request->countData ? $request->countData : 15,
+            'namaKaryawan' => $request->namaKaryawan ? $request->namaKaryawan : "",
         ];
-        $karyawan = Employee::where('id_company', $filter['perusahaan'])->with(['perusahaan'])->paginate($filter['countDisplay']);
+        $karyawan = Employee::orderBy('tanggal_masuk_employee', 'ASC')->where('nama_employee', 'like', "%" . $filter['namaKaryawan'] . "%")->where('id_company', $filter['perusahaan'])->with(['perusahaan'])->paginate($filter['countDisplay'])->withQueryString();
         return Inertia::render('Hris/Employee/EmployeeData', ['employee' => $karyawan, 'filter' => $filter]);
     }
 
@@ -140,5 +141,12 @@ class HrisController extends Controller
             Excel::import(new EmployeeImport, $request->file('fileData')->store('temp'));
             return redirect('/hris/karyawan/data-karyawan')->with('message', 'Berhasil Import Data');
         }
+    }
+
+    // detail karyawan
+    public function detailKaryawan($id = null)
+    {
+        $karyawan = Employee::with(['perusahaan', 'grade'])->find($id);
+        return Inertia::render('Hris/Employee/ShowEmployee', ['karyawan' => $karyawan]);
     }
 }

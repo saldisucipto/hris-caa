@@ -17,4 +17,9 @@ class Employee extends Model
     {
         return $this->hasOne(Company::class, 'id', 'id_company');
     }
+
+    public function grade()
+    {
+        return $this->hasOne(GradeEmployee::class, 'id', 'id_grade');
+    }
 }
