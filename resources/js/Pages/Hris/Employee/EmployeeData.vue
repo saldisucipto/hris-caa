@@ -189,17 +189,21 @@
                                                     '/hris/karyawan/show-karyawan/' +
                                                     employee.id
                                                 "
-                                                class="text-left px-2 py-1 rounded-md hover:bg-yellow-600 hover:text-white"
+                                                class="text-left px-2 py-1 rounded-md hover:bg-blue-600 hover:text-white"
                                             >
                                                 <i class="fas fa-eye"></i>
                                                 Details
                                             </a>
-                                            <button
-                                                class="text-left px-2 py-1 rounded-md hover:bg-blue-600 hover:text-white"
+                                            <a
+                                                :href="
+                                                    '/hris/karyawan/update-karyawan/' +
+                                                    employee.id
+                                                "
+                                                class="text-left px-2 py-1 rounded-md hover:bg-yellow-600 hover:text-white"
                                             >
                                                 <i class="fas fa-pen"></i>
                                                 Update
-                                            </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>

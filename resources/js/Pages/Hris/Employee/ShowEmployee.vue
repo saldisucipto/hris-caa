@@ -5,7 +5,7 @@
             <div class="flex flex-col gap-3 mx-auto">
                 <div class="grid grid-flow-col grid-cols-12 gap-2">
                     <div class="col-span-2">
-                        <div class="w-full h-40 m-6">
+                        <div class="w-full h-56 m-6">
                             <img
                                 class="h-full w-full object-cover"
                                 src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80"
@@ -17,8 +17,18 @@
                         class="col-span-10 drop-shadow-sm flex flex-col text-gray-800"
                     >
                         <div class="m-6 flex flex-col gap-4">
-                            <div class="text-xl font-semibold text-ledt">
-                                Profile Karyawan
+                            <div class="flex justify-between">
+                                <div class="text-xl font-semibold text-ledt">
+                                    Profile Karyawan
+                                </div>
+                                <div>
+                                    <a
+                                        class="text-xl font-semibold"
+                                        href="/hris/karyawan/data-karyawan"
+                                    >
+                                        <i class="fas fa-arrow-left"></i>
+                                    </a>
+                                </div>
                             </div>
                             <table
                                 class="bg-slate-100 border text-left h-full w-full rounded-lg"
@@ -219,18 +229,19 @@
                                     >
                                         {{
                                             karyawan.alamat_employee +
-                                            " Rt . " +
+                                            " RT/RW ." +
                                             karyawan.alamat_rt_employee +
                                             "/" +
                                             karyawan.alamat_rw_employee +
-                                            "Kel. " +
+                                            " Kel." +
                                             karyawan.alamat_kel_employee +
-                                            "Kec. " +
+                                            " Kec." +
                                             karyawan.alamat_kec_employee +
-                                            "Kab. " +
+                                            " Kab." +
                                             karyawan.alamat_kab_employee +
+                                            " - " +
                                             karyawan.alamat_prov_employee +
-                                            "-" +
+                                            " " +
                                             karyawan.alamat_kode_pos_employee
                                         }}
                                     </td>
@@ -263,7 +274,13 @@
                                     <td
                                         class="text-lg font-semibold px-2 border-2"
                                     >
-                                        {{ karyawan.nik_karyawan_employee }}
+                                        {{
+                                            karyawan.tempat_lahir_employee +
+                                            ", " +
+                                            showDate(
+                                                karyawan.tanggal_lahir_employee
+                                            )
+                                        }}
                                     </td>
                                 </tr>
                                 <tr class="h-10 hover:bg-white hover:h-12">
@@ -276,22 +293,7 @@
                                         {{ karyawan.agama_employee }}
                                     </td>
                                 </tr>
-                                <tr class="h-10 hover:bg-white hover:h-12">
-                                    <th class="px-2 font-normal border-2">
-                                        Tanggal Masuk
-                                    </th>
-                                    <td
-                                        class="text-lg font-semibold px-2 border-2"
-                                    >
-                                        {{
-                                            karyawan.tempat_lahir_employee +
-                                            ", " +
-                                            showDate(
-                                                karyawan.tanggal_lahir_employee
-                                            )
-                                        }}
-                                    </td>
-                                </tr>
+
                                 <tr class="h-10 hover:bg-white hover:h-12">
                                     <th class="px-2 font-normal border-2">
                                         Umur

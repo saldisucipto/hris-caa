@@ -30,6 +30,7 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
         Route::match(['get', 'post'], '/buat-data-karyawan', [HrisController::class, 'buatDataKaryawan']);
 
         Route::get('/show-karyawan/{id}', [HrisController::class, 'detailKaryawan']);
+        Route::match(['get', 'post'], '/update-karyawan/{id}', [HrisController::class, 'updateKaryawan']);
     });
 });
 
