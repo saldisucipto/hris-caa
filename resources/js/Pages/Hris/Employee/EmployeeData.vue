@@ -290,8 +290,11 @@ export default {
             router.get("/hris/karyawan/data-karyawan/", this.form);
         },
         searchData() {
-            this.form.id_company = this.id_company;
-            router.get("/hris/karyawan/data-karyawan/", this.form);
+            clearTimeout();
+            setTimeout(() => {
+                this.form.id_company = this.id_company;
+                router.get("/hris/karyawan/data-karyawan/", this.form);
+            }, 1000);
         },
         modalOption(id) {
             this.selectId = id;
