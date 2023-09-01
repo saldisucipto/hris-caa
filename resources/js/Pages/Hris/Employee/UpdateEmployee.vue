@@ -6,11 +6,12 @@
                 <title-pages> Update Data Karyawan </title-pages>
             </div>
             <div class="my-auto flex gap-2">
-                <button
+                <a
+                    :href="'/hris/karyawan/mutasi/' + karyawan.id"
                     class="bg-green-400 hover:bg-green-700 text-white py-1 rounded-md drop-shadow-sm px-3"
                 >
                     Mutasi Karyawan
-                </button>
+                </a>
                 <button
                     class="bg-red-400 hover:bg-red-700 text-white py-1 rounded-md drop-shadow-sm px-3"
                 >

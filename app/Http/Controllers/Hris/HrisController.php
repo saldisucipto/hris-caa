@@ -242,4 +242,13 @@ class HrisController extends Controller
             return redirect('/hris/karyawan/data-karyawan')->with('message', 'Berhasil Update' . $update->input('nama_employee'));
         }
     }
+
+    function mutasiKaryawan(Request $request, $id = null)
+    {
+        $karyawan = Employee::find($id);
+        $company = Company::get(['id', 'nama_company']);
+        if ($request->isMethod('GET')) {
+            return  Inertia::render('Hris/Mutasi/MutasiEmployee', ['karyawan' => $karyawan, 'company' => $company]);
+        }
+    }
 }

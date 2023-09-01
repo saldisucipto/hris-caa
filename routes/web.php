@@ -32,8 +32,12 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
         Route::get('/show-karyawan/{id}', [HrisController::class, 'detailKaryawan']);
         Route::match(['get', 'post'], '/update-karyawan/{id}', [HrisController::class, 'updateKaryawan']);
 
-
         Route::match(['get', 'delete'], '/delete-karyawan/{id}', [HrisController::class, 'deleteKaryawan']);
+
+        // mutasi karyawan
+        Route::prefix('/mutasi')->group(function () {
+            Route::match(['get', 'post'], '/{id}', [HrisController::class, 'mutasiKaryawan']);
+        });
     });
 });
 
