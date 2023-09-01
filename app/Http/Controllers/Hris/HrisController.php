@@ -150,6 +150,18 @@ class HrisController extends Controller
         return Inertia::render('Hris/Employee/ShowEmployee', ['karyawan' => $karyawan]);
     }
 
+    // delete karyawan
+    public function deleteKaryawan(Request $request, $id = null)
+    {
+        $karyawan = Employee::find($id);
+        if ($request->isMethod('GET')) {
+            return Inertia::render('Hris/Employee/DeleteEmployee', ['karyawan' => $karyawan]);
+        } elseif ($request->isMethod('DELETE')) {
+            $karyawan->delete();
+            return redirect('/hris/karyawan/data-karyawan')->with('message', 'Data Karyawan ' . $karyawan->nama_employee . ' Berhasil dihapus!');
+        }
+    }
+
     // update karyawan
     public function updateKaryawan(Request $update, $id = null)
     {

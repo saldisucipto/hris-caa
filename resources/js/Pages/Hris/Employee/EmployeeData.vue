@@ -204,6 +204,16 @@
                                                 <i class="fas fa-pen"></i>
                                                 Update
                                             </a>
+                                            <a
+                                                :href="
+                                                    '/hris/karyawan/delete-karyawan/' +
+                                                    employee.id
+                                                "
+                                                class="text-left px-2 py-1 rounded-md hover:bg-red-600 hover:text-white"
+                                            >
+                                                <i class="fas fa-trash"></i>
+                                                Delete
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -259,6 +269,7 @@ export default {
             id_company: this.filter.perusahaan,
             count_data: this.filter.countDisplay,
             selectId: null,
+            deleteModal: true,
         };
     },
     setup() {
@@ -305,6 +316,9 @@ export default {
             setTimeout(() => {
                 this.selectId = null;
             }, 4000);
+        },
+        modalDelete() {
+            this.deleteModal = !this.deleteModal;
         },
     },
 };

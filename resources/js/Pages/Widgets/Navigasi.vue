@@ -43,8 +43,8 @@
                             $page.url.startsWith('/hris/karyawan'),
                     }"
                 >
-                    <i class="fas fa-server my-auto"></i>
-                    <span>Data Karyawan</span>
+                    <i class="fas fa-users my-auto"></i>
+                    <span> Karyawan</span>
                 </div>
             </Link>
             <Link
