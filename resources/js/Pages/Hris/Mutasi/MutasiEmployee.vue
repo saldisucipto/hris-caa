@@ -1,7 +1,20 @@
 <template>
     <div class="p-3 rounded-xl bg-white flex flex-col gap-4">
+        <div class="flex justify-between pr-3">
+            <div class="text-xl font-semibold text-ledt">
+                <title-pages> Mutasi Karyawan </title-pages>
+            </div>
+            <div class="my-auto">
+                <a
+                    class="text-xl font-semibold"
+                    href="/hris/karyawan/data-karyawan"
+                >
+                    <i class="fas fa-arrow-left"></i>
+                </a>
+            </div>
+        </div>
         <!-- Title Pages -->
-        <title-pages> Mutasi Karyawan </title-pages>
+
         <!-- Endt Title Pages -->
 
         <!-- Main menu  -->
@@ -46,6 +59,12 @@
                                     min="2022-01-01"
                                     max="2025-01-01"
                                 />
+                                <div
+                                    class="text-xs px-1 text-red-600"
+                                    v-if="errors.tanggal_mutasi"
+                                >
+                                    {{ errors.tanggal_mutasi }}
+                                </div>
                             </div>
                             <div class="flex flex-col gap-2">
                                 <label class="text-gray-700 font-semibold"
@@ -83,6 +102,45 @@
                                         {{ company.nama_company }}
                                     </option>
                                 </select>
+                                <div
+                                    class="text-xs px-1 text-red-600"
+                                    v-if="errors.id_company_tujuan"
+                                >
+                                    {{ errors.id_company_tujuan }}
+                                </div>
+                                <div
+                                    class="text-xs px-1 text-red-600"
+                                    v-if="this.errorsInput"
+                                >
+                                    Company Tujuan Tidak Boleh sama Dengan
+                                    Company Sebelumnya
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="flex-1 flex flex-col gap-2">
+                                <label class="text-gray-700 font-semibold"
+                                    >Jabatan Awal</label
+                                >
+                                <input
+                                    class="drop-shadow-sm border py-2 px-3 rounded-md focus:outline-none text-sm"
+                                    type="text"
+                                    placeholder="Jabatan Awal"
+                                    :value="karyawan.jabatan_employee"
+                                    disabled
+                                />
+                            </div>
+                            <div class="flex-1 flex flex-col gap-2">
+                                <label class="text-gray-700 font-semibold"
+                                    >Jabatan Tujuan</label
+                                >
+                                <input
+                                    class="drop-shadow-sm border py-2 px-3 rounded-md focus:outline-none text-sm"
+                                    type="text"
+                                    placeholder="Jabatan Setelah Di Mutasi"
+                                    v-model="form.jabatan_tujuan"
+                                    required
+                                />
                             </div>
                         </div>
                         <div class="flex flex-col gap-2">
@@ -116,7 +174,7 @@
                             class="bg-blue-400 hover:bg-blue-700 text-white py-1 rounded-md drop-shadow-sm"
                             type="submit"
                         >
-                            Import Data
+                            Mutasi Karyawan
                         </button>
                     </form>
                 </div>
@@ -137,6 +195,7 @@ export default {
     data() {
         return {
             fileExcel: null,
+            errorsInput: false,
         };
     },
     components: {
@@ -156,6 +215,7 @@ export default {
             tanggal_mutasi: null,
             id_company_asal: null,
             id_company_tujuan: 1,
+            jabatan_tujuan: null,
             notes: "Catatan",
         });
         return { form };
@@ -165,12 +225,22 @@ export default {
         mutasiData() {
             this.form.fileData = this.fileExcel;
             this.form.id_employee = this.karyawan.id;
-            router.post("/hris/karyawan/import-data-karyawan", this.form, {
-                preserveScroll: true,
-                onSuccess: () => {
-                    this.form.reset();
-                },
-            });
+            if (this.karyawan.id_company == this.form.id_company_tujuan) {
+                this.errorsInput = true;
+                return;
+            } else {
+                router.post(
+                    "/hris/karyawan/mutasi/" + this.karyawan.id,
+                    this.form,
+                    {
+                        preserveScroll: true,
+                        onSuccess: () => {
+                            this.form.reset();
+                            this.errorsInput = false;
+                        },
+                    }
+                );
+            }
         },
         loadData() {
             this.form.id_company_asal = this.karyawan.id_company;

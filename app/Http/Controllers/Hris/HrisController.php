@@ -15,6 +15,7 @@ use App\Models\Company;
 use App\Models\Employee;
 use App\Models\GradeEmployee;
 use App\Models\LastEdu;
+use App\Models\MutasiKaryawan;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -246,9 +247,44 @@ class HrisController extends Controller
     function mutasiKaryawan(Request $request, $id = null)
     {
         $karyawan = Employee::find($id);
+        $mutasiKaryawan = new MutasiKaryawan();
         $company = Company::get(['id', 'nama_company']);
         if ($request->isMethod('GET')) {
             return  Inertia::render('Hris/Mutasi/MutasiEmployee', ['karyawan' => $karyawan, 'company' => $company]);
+        } elseif ($request->isMethod('POST')) {
+            $request->validate([
+                'tanggal_mutasi' => 'required|date',
+                'id_company_tujuan' => 'required'
+            ]);
+            // dd($data = $request->all());
+            $data = $request->all();
+
+            $mutasiKaryawan->id_employee = $data['id_employee'];
+            $mutasiKaryawan->tanggal_mutasi = $data['tanggal_mutasi'];
+            $mutasiKaryawan->id_company_asal = $data['id_company_asal'];
+            $mutasiKaryawan->id_company_tujuan = $data['id_company_tujuan'];
+            $mutasiKaryawan->jabatan_awal = $karyawan->jabatan_employee;
+            $mutasiKaryawan->jabatan_tujuan = $data['jabatan_tujuan'];
+            $mutasiKaryawan->notes = $data['notes'];
+            $mutasiKaryawan->save();
+            $karyawan->id_company = $data['id_company_tujuan'];
+            $karyawan->jabatan_employee = $data['jabatan_tujuan'];
+            $karyawan->update();
+            return redirect('/hris/karyawan/data-karyawan')->with('message', 'Berhasil Input Mutasi Karyawan ' . $request->input($karyawan->nama_employee));
         }
+    }
+
+    // mutasi data
+    function mutasi(Request $request)
+    {
+        $filter = [
+            'perusahaan' => $request->id_company ? $request->id_company : 1,
+            'countDisplay' =>  $request->countData ? $request->countData : 15,
+            'jabatanAwal' => $request->jabatanAwal ? $request->jabatanAwal : "",
+        ];
+        $mutasi = MutasiKaryawan::with(['employee', 'companyAsal', 'companyTujuan'])->where('jabatan_awal', 'like', "%" . $filter['jabatanAwal'] . "%")->paginate($filter['countDisplay'])->withQueryString();
+        // dd($mutasi);
+
+        return  Inertia::render('Hris/Mutasi/MutasiEmployeeData', ['mutasi' => $mutasi, 'filter' => $filter]);
     }
 }

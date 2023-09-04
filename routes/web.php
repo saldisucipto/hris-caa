@@ -36,6 +36,7 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
 
         // mutasi karyawan
         Route::prefix('/mutasi')->group(function () {
+            Route::get('/', [HrisController::class, 'mutasi']);
             Route::match(['get', 'post'], '/{id}', [HrisController::class, 'mutasiKaryawan']);
         });
     });

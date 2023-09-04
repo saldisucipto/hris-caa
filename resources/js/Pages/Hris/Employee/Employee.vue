@@ -17,6 +17,9 @@
             <card-master-data :linkTujuan="'cuti'" :iconData="'fa-pen'"
                 >Cuti Karyawan</card-master-data
             >
+            <card-master-data :linkTujuan="'mutasi'" :iconData="'fa-sync'"
+                >Mutasi Karyawan</card-master-data
+            >
             <!-- End Card Master Data -->
         </div>
 
