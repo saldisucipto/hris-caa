@@ -28,4 +28,9 @@ class Employee extends Model
     {
         return $this->hasOne(GradeEmployee::class, 'id', 'id_bank');
     }
+
+    public function resign()
+    {
+        return $this->belongsTo(Resign::class, 'id', 'id_employee');
+    }
 }

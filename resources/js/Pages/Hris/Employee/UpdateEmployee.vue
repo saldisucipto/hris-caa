@@ -12,11 +12,12 @@
                 >
                     Mutasi Karyawan
                 </a>
-                <button
+                <a
+                    :href="'/hris/karyawan/resign/' + karyawan.id"
                     class="bg-red-400 hover:bg-red-700 text-white py-1 rounded-md drop-shadow-sm px-3"
                 >
                     Karyawan Resign
-                </button>
+                </a>
             </div>
         </div>
         <!-- Endt Title Pages -->

@@ -18,7 +18,13 @@
                     >
                         <div class="m-6 flex flex-col gap-4">
                             <div class="flex justify-between">
-                                <div class="text-xl font-semibold text-ledt">
+                                <div
+                                    v-if="karyawan.resign"
+                                    class="text-xl font-semibold text-red-600"
+                                >
+                                    Karyawan Resign
+                                </div>
+                                <div v-else class="text-xl font-semibold">
                                     Profile Karyawan
                                 </div>
                                 <div>
@@ -97,7 +103,46 @@
                                         }}
                                     </td>
                                 </tr>
-                                <tr class="h-10 hover:bg-white hover:h-12">
+                                <tr
+                                    v-if="karyawan.resign"
+                                    class="h-10 hover:bg-white hover:h-12"
+                                >
+                                    <th class="px-2 font-normal border-2">
+                                        Tanggal Resign
+                                    </th>
+                                    <td
+                                        class="text-lg font-semibold px-2 border-2 text-red-600"
+                                    >
+                                        {{
+                                            showDate(
+                                                karyawan.resign.tanggal_resign
+                                            )
+                                        }}
+                                    </td>
+                                </tr>
+                                <tr
+                                    v-if="karyawan.resign"
+                                    class="h-10 hover:bg-white hover:h-12"
+                                >
+                                    <th class="px-2 font-normal border-2">
+                                        Masa Kerja
+                                    </th>
+                                    <td
+                                        class="text-lg font-semibold px-2 border-2 text-red-600"
+                                    >
+                                        {{
+                                            showDateCalculate(
+                                                karyawan.tanggal_masuk_employee,
+                                                true,
+                                                karyawan.resign.tanggal_resign
+                                            ) + " Tahun"
+                                        }}
+                                    </td>
+                                </tr>
+                                <tr
+                                    v-else
+                                    class="h-10 hover:bg-white hover:h-12"
+                                >
                                     <th class="px-2 font-normal border-2">
                                         Masa Kerja
                                     </th>
@@ -415,9 +460,14 @@ export default {
             let dateTime = new Date(date).toLocaleDateString("id");
             return dateTime;
         },
-        showDateCalculate(date) {
+        showDateCalculate(date, resign = false, dateResign = null) {
             let dateCalcualte = 0;
-            let dateNow = new Date();
+            let dateNow = 0;
+            if (resign) {
+                dateNow = new Date(dateResign);
+            } else {
+                dateNow = new Date();
+            }
             dateCalcualte =
                 dateNow.getFullYear() - new Date(date).getFullYear();
             return dateCalcualte;

@@ -39,6 +39,12 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
             Route::get('/', [HrisController::class, 'mutasi']);
             Route::match(['get', 'post'], '/{id}', [HrisController::class, 'mutasiKaryawan']);
         });
+
+        // resign
+        Route::prefix('/resign')->group(function () {
+            Route::get('/', [HrisController::class, 'resign']);
+            Route::match(['get', 'post'], '/{id}', [HrisController::class, 'resignKaryawan']);
+        });
     });
 });
 

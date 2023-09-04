@@ -20,6 +20,11 @@
             <card-master-data :linkTujuan="'mutasi'" :iconData="'fa-sync'"
                 >Mutasi Karyawan</card-master-data
             >
+            <card-master-data
+                :linkTujuan="'resign'"
+                :iconData="'fa-sign-out-alt'"
+                >Karyawan Resign</card-master-data
+            >
             <!-- End Card Master Data -->
         </div>
 

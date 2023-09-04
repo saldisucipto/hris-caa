@@ -16,6 +16,7 @@ use App\Models\Employee;
 use App\Models\GradeEmployee;
 use App\Models\LastEdu;
 use App\Models\MutasiKaryawan;
+use App\Models\Resign;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -47,7 +48,7 @@ class HrisController extends Controller
         } elseif ($create->isMethod('POST')) {
             $create->validate([
                 'nama_employee' => 'required|string|max:200',
-                'id_company' => 'numeric|max:1',
+                'id_company' => 'numeric',
                 'jabatan_employee' => 'required|string',
                 'nik_employee' => 'required|string',
                 'no_kk_employee' => 'required|string',
@@ -125,7 +126,7 @@ class HrisController extends Controller
             'countDisplay' =>  $request->countData ? $request->countData : 15,
             'namaKaryawan' => $request->namaKaryawan ? $request->namaKaryawan : "",
         ];
-        $karyawan = Employee::orderBy('tanggal_masuk_employee', 'ASC')->where('nama_employee', 'like', "%" . $filter['namaKaryawan'] . "%")->where('id_company', $filter['perusahaan'])->with(['perusahaan'])->paginate($filter['countDisplay'])->withQueryString();
+        $karyawan = Employee::orderBy('tanggal_masuk_employee', 'ASC')->where('status_employee', '!=', 'resign')->where('nama_employee', 'like', "%" . $filter['namaKaryawan'] . "%")->where('id_company', $filter['perusahaan'])->with(['perusahaan'])->paginate($filter['countDisplay'])->withQueryString();
         return Inertia::render('Hris/Employee/EmployeeData', ['employee' => $karyawan, 'filter' => $filter]);
     }
 
@@ -147,7 +148,7 @@ class HrisController extends Controller
     // detail karyawan
     public function detailKaryawan($id = null)
     {
-        $karyawan = Employee::with(['perusahaan', 'grade', 'bank'])->find($id);
+        $karyawan = Employee::with(['perusahaan', 'grade', 'bank', 'resign'])->find($id);
         return Inertia::render('Hris/Employee/ShowEmployee', ['karyawan' => $karyawan]);
     }
 
@@ -175,7 +176,7 @@ class HrisController extends Controller
         } elseif ($update->isMethod('POST')) {
             $update->validate([
                 'nama_employee' => 'required|string|max:200',
-                'id_company' => 'numeric|max:1',
+                'id_company' => 'numeric',
                 'jabatan_employee' => 'required|string',
                 'nik_employee' => 'required|string',
                 'no_kk_employee' => 'required|string',
@@ -284,7 +285,41 @@ class HrisController extends Controller
         ];
         $mutasi = MutasiKaryawan::with(['employee', 'companyAsal', 'companyTujuan'])->where('jabatan_awal', 'like', "%" . $filter['jabatanAwal'] . "%")->paginate($filter['countDisplay'])->withQueryString();
         // dd($mutasi);
-
         return  Inertia::render('Hris/Mutasi/MutasiEmployeeData', ['mutasi' => $mutasi, 'filter' => $filter]);
+    }
+
+    function resign(Request $request)
+    {
+        $filter = [
+            'perusahaan' => $request->id_company ? $request->id_company : 1,
+            'countDisplay' =>  $request->countData ? $request->countData : 15,
+            'namaKaryawan' => $request->namaKaryawan ? $request->namaKaryawan : "",
+        ];
+        $karyawan = Employee::orderBy('tanggal_masuk_employee', 'ASC')->where('status_employee', 'resign')->where('nama_employee', 'like', "%" . $filter['namaKaryawan'] . "%")->where('id_company', $filter['perusahaan'])->with(['perusahaan'])->paginate($filter['countDisplay'])->withQueryString();
+        return Inertia::render('Hris/Resign/EmployeeData', ['employee' => $karyawan, 'filter' => $filter]);
+    }
+
+
+    // karyawan Resign
+    function resignKaryawan(Request $request, $id = null)
+    {
+        $karyawan = Employee::find($id);
+        if ($request->isMethod('get')) {
+            return Inertia::render('Hris/Resign/EmployeeReesign', ['karyawan' => $karyawan]);
+        } elseif ($request->isMethod('POST')) {
+            $request->validate([
+                'tanggal_resign' => 'required|date'
+            ]);
+            $data = $request->all();
+            $resign = new Resign();
+            $resign->id_employee = $data['id_employee'];
+            $resign->tanggal_resign = $data['tanggal_resign'];
+            $resign->notes = $data['notes'];
+            $resign->save();
+
+            $karyawan->status_employee = 'resign';
+            $karyawan->update();
+            return redirect('/hris/karyawan/data-karyawan')->with('message', 'Berhasil Tandai Karyawan Resign ' . $karyawan->nama_employee);
+        }
     }
 }
