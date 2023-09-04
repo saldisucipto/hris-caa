@@ -12,6 +12,7 @@ use App\Http\Utils\FileProcess;
 use App\Imports\EmployeeImport;
 use App\Models\Bank;
 use App\Models\Company;
+use App\Models\Cuti;
 use App\Models\Employee;
 use App\Models\GradeEmployee;
 use App\Models\LastEdu;
@@ -321,5 +322,22 @@ class HrisController extends Controller
             $karyawan->update();
             return redirect('/hris/karyawan/data-karyawan')->with('message', 'Berhasil Tandai Karyawan Resign ' . $karyawan->nama_employee);
         }
+    }
+
+    // cuti karyawan
+    function cuti(Request $request)
+    {
+        $data = Cuti::with(['jenisCuti', 'employeeData'])->paginate(10);
+        return Inertia::render('Hris/Cuti/EmployeeCutiData', ['data' => $data]);
+    }
+
+    // create cuti
+    function createCuti(Request $request)
+    {
+        $filter = [
+            'searchData' => $request->searchData ? $request->searchData : "",
+        ];
+        $karyawan = Employee::where('status_employee', '!=', 'resign')->get();
+        return Inertia::render('Hris/Cuti/CreateEmployeeCuti', ['karyawan' => $karyawan]);
     }
 }

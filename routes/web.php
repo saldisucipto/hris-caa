@@ -16,6 +16,9 @@ Route::post('/logout', [AuthController::class, 'logout']);
 
 
 // end auth route
+Route::get('/', function () {
+    return redirect('/hris');
+});
 
 // HRIS
 Route::prefix('/hris')->middleware('auth')->group(function () {
@@ -44,6 +47,13 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
         Route::prefix('/resign')->group(function () {
             Route::get('/', [HrisController::class, 'resign']);
             Route::match(['get', 'post'], '/{id}', [HrisController::class, 'resignKaryawan']);
+        });
+
+        // cuti karywan
+        Route::prefix('/cuti')->group(function () {
+            Route::get('/', [HrisController::class, 'cuti']);
+
+            Route::match(['get', 'post'], '/create', [HrisController::class, 'createCuti']);
         });
     });
 });
