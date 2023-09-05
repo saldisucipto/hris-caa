@@ -1,7 +1,7 @@
 <template>
     <div class="p-3 rounded-xl bg-white flex flex-col gap-4">
         <!-- Title Pages -->
-        <title-pages> Input Cuti Karyawan </title-pages>
+        <title-pages> Inputi Cuti Bersama </title-pages>
         <!-- Endt Title Pages -->
 
         <!-- Main menu  -->
@@ -9,68 +9,9 @@
             <div class="p-3 flex flex-col">
                 <div>
                     <form
-                        @submit.prevent="formCutiKaryawan"
+                        @submit.prevent="formCutiBersamaKaryawan"
                         class="p-5 flex flex-col w-full gap-5"
                     >
-                        <div class="flex justify-center gap-3">
-                            <div class="flex flex-1 flex-col gap-2">
-                                <label class="text-gray-700 font-semibold"
-                                    >Cari Karyawan</label
-                                >
-                                <button
-                                    @click.prevent="openModal"
-                                    class="bg-blue-400 my-auto py-1 rounded-lg text-white"
-                                >
-                                    Cari Karyawan
-                                </button>
-                            </div>
-                            <div class="flex flex-1 flex-col gap-2">
-                                <label class="text-gray-700 font-semibold"
-                                    >Karyawan</label
-                                >
-                                <input
-                                    type="text"
-                                    class="drop-shadow-sm border py-2 px-3 rounded-md focus:outline-none text-sm"
-                                    placeholder="Nama Karyawan"
-                                    v-model="nama_karyawan"
-                                    disabled
-                                />
-                                <div
-                                    class="text-xs px-1 text-red-600"
-                                    v-if="errors.id_employee"
-                                >
-                                    {{ errors.id_employee }}
-                                </div>
-                            </div>
-                            <div class="flex flex-1 flex-col gap-2">
-                                <label class="text-gray-700 font-semibold"
-                                    >Jabatan</label
-                                >
-                                <input
-                                    type="text"
-                                    class="drop-shadow-sm border py-2 px-3 rounded-md focus:outline-none text-sm"
-                                    placeholder="Jabatan Karyawan"
-                                    v-model="jabatan_employee"
-                                    disabled
-                                />
-                            </div>
-                            <div class="flex flex-1 flex-col gap-2">
-                                <label class="text-gray-700 font-semibold"
-                                    >Sisa Cuti</label
-                                >
-                                <div class="text-xl font-semibold text-red-500">
-                                    {{ sisa_cuti }} Hari
-                                </div>
-                            </div>
-                            <div class="flex flex-1 flex-col gap-2">
-                                <label class="text-gray-700 font-semibold"
-                                    >Lama Cuti</label
-                                >
-                                <div class="text-xl font-semibold text-red-500">
-                                    {{ cutiForm.jumlah_cuti }} Hari
-                                </div>
-                            </div>
-                        </div>
                         <div class="flex justify-center gap-3">
                             <div class="flex flex-1 flex-col gap-2">
                                 <label class="text-gray-700 font-semibold"
@@ -133,6 +74,14 @@
                                     v-if="errors.tanggal_akhir_cuti"
                                 >
                                     {{ errors.tanggal_akhir_cuti }}
+                                </div>
+                            </div>
+                            <div class="flex flex-1 flex-col gap-2">
+                                <label class="text-gray-700 font-semibold"
+                                    >Lama Cuti</label
+                                >
+                                <div class="text-xl font-semibold text-red-500">
+                                    {{ cutiForm.jumlah_cuti }} Hari
                                 </div>
                             </div>
                         </div>
@@ -347,7 +296,6 @@ export default {
 
         const cutiForm = useForm({
             id_jenis_cuti: 1,
-            id_employee: null,
             tanggal_mulai_cuti: null,
             tanggal_akhir_cuti: null,
             keterangan_cuti: "Keterangan Cuti",
@@ -357,13 +305,17 @@ export default {
     },
 
     methods: {
-        formCutiKaryawan() {
-            router.post("/hris/karyawan/cuti/create", this.cutiForm, {
-                preserveScroll: true,
-                onSuccess: () => {
-                    this.form.reset();
-                },
-            });
+        formCutiBersamaKaryawan() {
+            router.post(
+                "/hris/karyawan/cuti/create-cuti-bersama",
+                this.cutiForm,
+                {
+                    preserveScroll: true,
+                    onSuccess: () => {
+                        this.form.reset();
+                    },
+                }
+            );
         },
         openModal() {
             this.modal = !this.modal;

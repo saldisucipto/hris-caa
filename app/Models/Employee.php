@@ -33,4 +33,9 @@ class Employee extends Model
     {
         return $this->belongsTo(Resign::class, 'id', 'id_employee');
     }
+
+    public function cuti()
+    {
+        return $this->hasMany(Cuti::class, 'id_employee', 'id');
+    }
 }

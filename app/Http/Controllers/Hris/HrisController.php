@@ -15,11 +15,14 @@ use App\Models\Company;
 use App\Models\Cuti;
 use App\Models\Employee;
 use App\Models\GradeEmployee;
+use App\Models\JenisCuti;
 use App\Models\LastEdu;
 use App\Models\MutasiKaryawan;
 use App\Models\Resign;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
+use Symfony\Component\HttpFoundation\Response;
 
 class HrisController extends Controller
 {
@@ -327,17 +330,73 @@ class HrisController extends Controller
     // cuti karyawan
     function cuti(Request $request)
     {
-        $data = Cuti::with(['jenisCuti', 'employeeData'])->paginate(10);
-        return Inertia::render('Hris/Cuti/EmployeeCutiData', ['data' => $data]);
+        // $data = Cuti::with(['jenisCuti', 'employeeData'])->paginate(10);
+        $data = Employee::with('cuti')->paginate(10);
+        dd($data);
+        $filter = [
+            'saerch_nama_karyawan' => $request->saerch_nama_karyawan ? $request->saerch_nama_karyawan : "",
+        ];
+        $karyawan = Employee::where('status_employee', '!=', 'resign')->where('nama_employee', 'like', "%" . $filter['saerch_nama_karyawan'] . "%")->paginate(7)->withQueryString();;
+
+        if ($request->isMethod('POST')) {
+            return response()->json(['karyawan' => $karyawan], 200);
+        } else {
+            return Inertia::render('Hris/Cuti/EmployeeCutiData', ['data' => $data]);
+        }
     }
 
     // create cuti
     function createCuti(Request $request)
     {
-        $filter = [
-            'searchData' => $request->searchData ? $request->searchData : "",
-        ];
-        $karyawan = Employee::where('status_employee', '!=', 'resign')->get();
-        return Inertia::render('Hris/Cuti/CreateEmployeeCuti', ['karyawan' => $karyawan]);
+        if ($request->isMethod('POST')) {
+            $data = $request->all();
+            $request->validate([
+                'id_employee' => 'required',
+                'tanggal_mulai_cuti' => 'required|date',
+                'tanggal_akhir_cuti' => 'required|date'
+            ]);
+            $cuti = new Cuti();
+            $cuti->id_jenis_cuti = $data['id_jenis_cuti'];
+            $cuti->id_employee = $data['id_employee'];
+            $cuti->tanggal_mulai_cuti = $data['tanggal_mulai_cuti'];
+            $cuti->tanggal_akhir_cuti = $data['tanggal_akhir_cuti'];
+            $cuti->keterangan_cuti = $data['keterangan_cuti'];
+            $cuti->jumlah_cuti = $data['jumlah_cuti'];
+            $cuti->save();
+            return redirect('/hris/karyawan/cuti/')->with('message', 'Berhasil Membuat Cuti Karyawan ');
+        } else {
+            $karyawan = Employee::where('status_employee', '!=', 'resign')->paginate(7);
+            $jenis_cuti = JenisCuti::get(['id', 'jenis_cuti']);
+            return Inertia::render('Hris/Cuti/CreateEmployeeCuti', ['karyawan' => $karyawan, 'jenis_cuti' => $jenis_cuti]);
+        }
+    }
+
+    // input cuti bersama
+    function createCutiBersama(Request $request)
+    {
+        if ($request->isMethod('GET')) {
+            $jenis_cuti = JenisCuti::get(['id', 'jenis_cuti']);
+            return Inertia::render('Hris/Cuti/CreateEmployeeCutiBersama', ['jenis_cuti' => $jenis_cuti]);
+        } elseif ($request->isMethod('POST')) {
+            $request->validate([
+                'tanggal_mulai_cuti' => 'required|date',
+                'tanggal_akhir_cuti' => 'required|date'
+            ]);
+            $data = $request->all();
+            $karyawan = Employee::get();
+            $cutiBersama = [];
+            foreach ($karyawan as $index => $value) {
+                $cutiBersama[] = [
+                    'id_jenis_cuti' => $data['id_jenis_cuti'],
+                    'id_employee' => $value->id,
+                    'tanggal_mulai_cuti' => $data['tanggal_mulai_cuti'],
+                    'tanggal_akhir_cuti' => $data['tanggal_akhir_cuti'],
+                    'keterangan_cuti' => $data['keterangan_cuti'],
+                    'jumlah_cuti' => $data['jumlah_cuti'],
+                ];
+            }
+            Cuti::insert($cutiBersama);
+            return redirect('/hris/karyawan/cuti/')->with('message', 'Berhasil Membuat Cuti Bersama Karyawan ');
+        }
     }
 }
