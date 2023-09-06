@@ -69,6 +69,12 @@
                                 <div class="text-xl font-semibold text-red-500">
                                     {{ cutiForm.jumlah_cuti }} Hari
                                 </div>
+                                <input
+                                    type="text"
+                                    class="drop-shadow-sm border py-2 px-3 rounded-md focus:outline-none text-sm w-20"
+                                    placeholder="Jumlah Cuti"
+                                    v-model="cutiForm.jumlah_cuti"
+                                />
                             </div>
                         </div>
                         <div class="flex justify-center gap-3">

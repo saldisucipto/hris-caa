@@ -1,7 +1,9 @@
 <template>
     <div class="p-3 rounded-xl bg-white flex flex-col gap-4">
         <!-- Title Pages -->
-        <title-pages> Mutasi Data Employee </title-pages>
+        <title-pages :backto="'/hris/karyawan'">
+            Mutasi Data Employee
+        </title-pages>
         <!-- Endt Title Pages -->
         <!-- Main menu  -->
         <div class="m-3 bg-slate-100 rounded-lg">

@@ -330,18 +330,17 @@ class HrisController extends Controller
     // cuti karyawan
     function cuti(Request $request)
     {
-        // $data = Cuti::with(['jenisCuti', 'employeeData'])->paginate(10);
-        $data = Employee::with('cuti')->paginate(10);
-        dd($data);
         $filter = [
             'saerch_nama_karyawan' => $request->saerch_nama_karyawan ? $request->saerch_nama_karyawan : "",
+            'countDisplay' =>  $request->countData ? $request->countData : 15,
         ];
+        $data = Employee::with('cuti')->where('status_employee', '!=', 'resign')->where('nama_employee', 'like', "%" . $filter['saerch_nama_karyawan'] . "%")->paginate($filter['countDisplay'])->withQueryString();;
         $karyawan = Employee::where('status_employee', '!=', 'resign')->where('nama_employee', 'like', "%" . $filter['saerch_nama_karyawan'] . "%")->paginate(7)->withQueryString();;
 
         if ($request->isMethod('POST')) {
             return response()->json(['karyawan' => $karyawan], 200);
         } else {
-            return Inertia::render('Hris/Cuti/EmployeeCutiData', ['data' => $data]);
+            return Inertia::render('Hris/Cuti/EmployeeCutiData', ['data' => $data, 'filter' => $filter]);
         }
     }
 
@@ -397,6 +396,15 @@ class HrisController extends Controller
             }
             Cuti::insert($cutiBersama);
             return redirect('/hris/karyawan/cuti/')->with('message', 'Berhasil Membuat Cuti Bersama Karyawan ');
+        }
+    }
+
+    // detail cuti
+    function detailsCuti(Request $request, $id = null)
+    {
+        if ($request->isMethod('GET')) {
+            $detailCuti = Employee::with('cuti')->find($id);
+            return Inertia::render('Hris/Cuti/EmployeeCutiDetails', ['data' => $detailCuti]);
         }
     }
 }

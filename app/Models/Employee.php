@@ -36,6 +36,6 @@ class Employee extends Model
 
     public function cuti()
     {
-        return $this->hasMany(Cuti::class, 'id_employee', 'id');
+        return $this->hasMany(Cuti::class, 'id_employee', 'id')->with('jenisCuti');
     }
 }

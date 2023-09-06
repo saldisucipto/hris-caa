@@ -35,7 +35,7 @@
                         placeholder="Cari Karyawan"
                         id=""
                         class="flex-1 rounded-lg px-2 py-2 focus:outline-none text-sm w-full"
-                        v-model="form.jabatanAwal"
+                        v-model="form.saerch_nama_karyawan"
                         @keyup="searchData"
                     />
 
@@ -82,23 +82,15 @@
                             <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                Tanggal Cuti
+                                Cuti Terakhir
                             </th>
-                            <th
-                                class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
-                            >
-                                Tanggal Berakhir Cuti
-                            </th>
+
                             <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
                                 Jabatan
                             </th>
-                            <th
-                                class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
-                            >
-                                Jumlah Hari
-                            </th>
+
                             <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
@@ -129,33 +121,29 @@
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
                                 <p class="uppercase">
-                                    {{ dataData.id }}
+                                    {{ dataData.nama_employee }}
                                 </p>
                             </td>
                             <td
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                {{ showDate(dataData.id) }}
+                                {{
+                                    showDate(
+                                        dataData.cuti[0].tanggal_akhir_cuti
+                                    )
+                                }}
                             </td>
+
                             <td
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                {{ showDate(dataData.id) }}
+                                {{ dataData.jabatan_employee }}
                             </td>
-                            <td
-                                class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
-                            >
-                                {{ dataData.id }}
-                            </td>
+
                             <td
                                 class="whitespace-nowrap uppercase px-4 py-2 font-medium text-center text-gray-900"
                             >
-                                {{ dataData.id }} Hari
-                            </td>
-                            <td
-                                class="whitespace-nowrap uppercase px-4 py-2 font-medium text-center text-gray-900"
-                            >
-                                {{ 12 - dataData.id }}
+                                {{ sisaCuti(dataData.cuti) }}
                             </td>
 
                             <td
@@ -175,24 +163,13 @@
                                         >
                                             <a
                                                 :href="
-                                                    '/hris/karyawan/show-karyawan/' +
+                                                    '/hris/karyawan/cuti/details/' +
                                                     dataData.id
                                                 "
                                                 class="text-left px-2 py-1 rounded-md hover:bg-blue-600 hover:text-white"
                                             >
                                                 <i class="fas fa-eye"></i>
                                                 Details
-                                            </a>
-
-                                            <a
-                                                :href="
-                                                    '/hris/karyawan/delete-karyawan/' +
-                                                    dataData.id
-                                                "
-                                                class="text-left px-2 py-1 rounded-md hover:bg-red-600 hover:text-white"
-                                            >
-                                                <i class="fas fa-trash"></i>
-                                                Delete
                                             </a>
                                         </div>
                                     </div>
@@ -263,6 +240,7 @@ export default {
         return {
             selectId: null,
             modalCreate: false,
+            count_data: this.filter.countDisplay,
         };
     },
     components: {
@@ -274,10 +252,12 @@ export default {
     props: {
         errors: Object,
         data: Object,
+        filter: Object,
     },
     setup() {
         const form = useForm({
-            jabatanAwal: null,
+            saerch_nama_karyawan: null,
+            countData: "",
         });
         return { form };
     },
@@ -296,10 +276,14 @@ export default {
             let dateTime = new Date(date).toLocaleDateString("id");
             return dateTime;
         },
+        changeCount() {
+            this.form.countData = this.count_data;
+            router.get("/hris/karyawan/cuti/", this.form);
+        },
         searchData() {
             clearTimeout();
             setTimeout(() => {
-                router.get("/hris/karyawan/data/", this.form);
+                router.get("/hris/karyawan/cuti/", this.form);
             }, 1000);
         },
         modalOption(id) {
@@ -310,6 +294,16 @@ export default {
         },
         openModal() {
             this.modalCreate = !this.modalCreate;
+        },
+
+        sisaCuti(data) {
+            let jatah_cuti = 12;
+            let sisa_cuti = 0;
+
+            data.forEach((element) => {
+                sisa_cuti += element.jumlah_cuti;
+            });
+            return jatah_cuti - sisa_cuti + " Hari";
         },
     },
 
