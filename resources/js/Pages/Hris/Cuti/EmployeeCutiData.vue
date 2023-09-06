@@ -82,7 +82,7 @@
                             <th
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                Cuti Terakhir
+                                NIP Karyawan
                             </th>
 
                             <th
@@ -106,7 +106,15 @@
                     </thead>
 
                     <tbody class="divide-y divide-gray-200">
-                        <tr v-if="this.data.data == []"></tr>
+                        <tr v-if="this.data.data.length <= 0">
+                            <td
+                                colspan="6"
+                                rowspan="6"
+                                class="text-center py-8"
+                            >
+                                Belum ada Data Inputan
+                            </td>
+                        </tr>
                         <tr
                             v-else
                             v-for="(dataData, index) in data.data"
@@ -127,11 +135,7 @@
                             <td
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-900"
                             >
-                                {{
-                                    showDate(
-                                        dataData.cuti[0].tanggal_akhir_cuti
-                                    )
-                                }}
+                                {{ dataData.nik_karyawan_employee }}
                             </td>
 
                             <td
