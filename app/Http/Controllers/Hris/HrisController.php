@@ -16,8 +16,10 @@ use App\Models\Cuti;
 use App\Models\Employee;
 use App\Models\GradeEmployee;
 use App\Models\JenisCuti;
+use App\Models\JenisPeringatan;
 use App\Models\LastEdu;
 use App\Models\MutasiKaryawan;
+use App\Models\Peringatan;
 use App\Models\Resign;
 use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
@@ -406,5 +408,54 @@ class HrisController extends Controller
             $detailCuti = Employee::with('cuti')->find($id);
             return Inertia::render('Hris/Cuti/EmployeeCutiDetails', ['data' => $detailCuti]);
         }
+    }
+
+    // surat peringat
+    function suratPeringatan(Request $request)
+    {
+        if ($request->isMethod('GET')) {
+            $filter = [
+                'saerch_nama_karyawan' => $request->saerch_nama_karyawan ? $request->saerch_nama_karyawan : "",
+                'countDisplay' =>  $request->countData ? $request->countData : 15,
+            ];
+            $data = Peringatan::with(['jenisPeringatan', 'employee'])->paginate($filter['countDisplay'])->withQueryString();;
+            return Inertia::render('Hris/Peringatan/PeringatanData', ['data' => $data, 'filter' => $filter]);
+        }
+    }
+
+    // create peringatan
+    function createPringatan(Request $request)
+    {
+        $filter = [
+            'saerch_nama_karyawan' => $request->saerch_nama_karyawan ? $request->saerch_nama_karyawan : "",
+        ];
+        $karyawan = Employee::where('status_employee', '!=', 'resign')->where('nama_employee', 'like', "%" . $filter['saerch_nama_karyawan'] . "%")->paginate(7);
+        $jenis_peringatan = JenisPeringatan::get();
+        if ($request->isMethod('GET')) {
+            return Inertia::render('Hris/Peringatan/CreatePeringatan', ['karyawan' => $karyawan, 'jenis_peringatan' => $jenis_peringatan]);
+        } elseif ($request->isMethod('POST')) {
+            $data = $request->all();
+            $request->validate([
+                'tanggal_peringatan' => 'required|date',
+                'id_employee' => 'required',
+                'id_jenis_peringatan' => 'required',
+            ]);
+            $peringatan = new Peringatan();
+            $peringatan->tanggal_peringatan = $data['tanggal_peringatan'];
+            $peringatan->deskripsi_peringatan = $data['deskripsi_peringatan'];
+            $peringatan->id_employee = $data['id_employee'];
+            $peringatan->id_jenis_peringatan = $data['id_jenis_peringatan'];
+            $peringatan->active = true;
+            $peringatan->save();
+            return redirect('/hris/karyawan/peringatan/')->with('message', 'Berhasil Membuat Peringatan Karyawan ');
+        }
+    }
+
+    // delete peringatan
+    function deletePeringatan($id)
+    {
+        $peringatan = Peringatan::find($id);
+        $peringatan->delete();
+        return redirect('/hris/karyawan/peringatan/')->with('message', 'Data Berhasil Dihapus');
     }
 }

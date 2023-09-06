@@ -25,6 +25,11 @@
                 :iconData="'fa-sign-out-alt'"
                 >Karyawan Resign</card-master-data
             >
+            <card-master-data
+                :linkTujuan="'peringatan'"
+                :iconData="'fa-exclamation-triangle'"
+                >Punishment Karyawan</card-master-data
+            >
             <!-- End Card Master Data -->
         </div>
 

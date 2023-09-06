@@ -54,9 +54,17 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
             Route::match(['get', 'post'], '/', [HrisController::class, 'cuti']);
             Route::match(['get', 'post'], '/create', [HrisController::class, 'createCuti']);
             Route::match(['get', 'post'], '/create-cuti-bersama', [HrisController::class, 'createCutiBersama']);
-
             // Detail cuti
             Route::match(['get', 'post'], '/details/{id}', [HrisController::class, 'detailsCuti']);
+        });
+
+        // perinagatn
+        Route::prefix('/peringatan')->group(function () {
+            // group route
+            Route::match(['get', 'post'], '/', [HrisController::class, 'suratPeringatan']);
+
+            Route::match(['get', 'post'], '/create', [HrisController::class, 'createPringatan']);
+            Route::post('/delete/{id}', [HrisController::class, 'deletePeringatan']);
         });
     });
 });
