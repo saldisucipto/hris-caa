@@ -105,20 +105,65 @@
             <div class="rounded-md bg-bg-primary h-80 relative">
                 <div class="flex flex-col m-2 py-3 gap-4">
                     <div>
-                        <span class="font-semibold text-gray-700"
-                            >Notifikasi & Pengingat
+                        <span class="font-semibold text-gray-800"
+                            >Informasi & Notifikasi
                         </span>
                     </div>
-                    <div
-                        class="bg-white rounded-md h-10 flex flex-col justify-center hover:bg-blue-300 hover:font-semibold hover:text-white"
-                    >
-                        <div class="px-3 flex justify-between">
-                            <span class="text-sm">Ulang Tahun Karyawan</span>
-                            <span
-                                class="text-sm hape:flex hape:flex-col hape:text-center"
-                                ><b class="my-auto h-full">2</b>
-                                <span class="text-xs"> Karyawan</span>
-                            </span>
+                    <div class="flex gap-2">
+                        <div class="flex-1 flex flex-col gap-2">
+                            <div class="font-semibold text-gray-700">
+                                <h1>Peringatan Aktif Karyawan</h1>
+                            </div>
+                            <div v-for="sp in this.peringatan">
+                                <div
+                                    v-if="
+                                        statusPeringatan(sp.tanggal_peringatan)
+                                    "
+                                    class="bg-white rounded-md h-10 flex flex-col justify-center hover:bg-blue-300 hover:font-semibold hover:text-white"
+                                >
+                                    <div class="px-3 flex justify-between">
+                                        <span class="text-sm">{{
+                                            sp.employee.nama_employee
+                                        }}</span>
+                                        <div
+                                            class="text-sm hape:flex hape:flex-col hape:text-center flex gap-2 my-auto"
+                                        >
+                                            <span class="text-xs text-red-600">
+                                                {{
+                                                    sp.jenis_peringatan
+                                                        .jenis_peringatan
+                                                }}</span
+                                            >
+                                            <span
+                                                class="text-xs text-green-600"
+                                            >
+                                                Berakhir Pada =
+                                                {{
+                                                    tanggalBerakhir(
+                                                        sp.tanggal_peringatan
+                                                    )
+                                                }}</span
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div
+                                class="bg-white rounded-md h-10 flex flex-col justify-center hover:bg-blue-300 hover:font-semibold hover:text-white"
+                            >
+                                <div class="px-3 flex justify-between">
+                                    <span class="text-sm"
+                                        >Ulang Tahun Karyawan</span
+                                    >
+                                    <span
+                                        class="text-sm hape:flex hape:flex-col hape:text-center"
+                                        ><b class="my-auto h-full">2</b>
+                                        <span class="text-xs"> Karyawan</span>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -140,8 +185,39 @@ export default {
         chart: Object,
         employee: Number,
         company: Number,
+        peringatan: Object,
     },
     layout: DashboardLayout,
+    methods: {
+        tanggalBerakhir(date) {
+            let datePunishment = new Date(date);
+            let tanggalBerakhir = datePunishment.setMonth(
+                datePunishment.getMonth() + 6
+            );
+            return new Date(tanggalBerakhir).toLocaleDateString();
+        },
+        statusPeringatan(date) {
+            let datePunishment = new Date(date);
+            let dateNow = new Date();
+            let tanggalBerakhir = new Date(
+                datePunishment.setMonth(datePunishment.getMonth() + 6)
+            );
+
+            // To calculate the time difference of two dates
+            var perbedaan = tanggalBerakhir.getTime() - dateNow.getTime();
+            let totalDays = Math.ceil(perbedaan / (1000 * 3600 * 24));
+
+            let status = null;
+
+            if (totalDays <= 0) {
+                status = false;
+            } else {
+                status = true;
+            }
+
+            return status;
+        },
+    },
 };
 </script>
 

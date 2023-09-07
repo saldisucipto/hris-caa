@@ -27,16 +27,24 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 class HrisController extends Controller
 {
 
+    public function akhirPeringatan(date $date)
+    {
+        return date('Y-m-d', strtotime($date . ' + 6 months'));
+    }
     // home function
     public function index(VisitorCharts $chart)
     {
         $company = DB::table('company')->count();
         $employee = DB::table('employee')->count();
-        return Inertia::render('Hris/Index', ['chart' => $chart->build(), 'company' => $company, 'employee' => $employee,]);
+
+        $peringatan = Peringatan::with(['jenisPeringatan', 'employee'])->get();
+        // dd($peringatan);
+        return Inertia::render('Hris/Index', ['peringatan' => $peringatan, 'company' => $company, 'employee' => $employee,]);
     }
 
     // employee function
