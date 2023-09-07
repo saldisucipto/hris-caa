@@ -6,8 +6,6 @@ use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use App\Http\Charts\VisitorCharts;
 use Illuminate\Support\Facades\DB;
-use App\Http\Controllers\Data\MasterDataController;
-use App\Http\Requests\CreateEmployeeRequest;
 use App\Http\Utils\FileProcess;
 use App\Imports\EmployeeImport;
 use App\Models\Bank;
@@ -18,15 +16,13 @@ use App\Models\Foto;
 use App\Models\GradeEmployee;
 use App\Models\JenisCuti;
 use App\Models\JenisPeringatan;
-use App\Models\LastEdu;
 use App\Models\MutasiKaryawan;
 use App\Models\Peringatan;
 use App\Models\Resign;
-use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 class HrisController extends Controller
 {
@@ -36,7 +32,18 @@ class HrisController extends Controller
     {
         $company = DB::table('company')->count();
         $employee = DB::table('employee')->count();
-        return Inertia::render('Hris/Index', ['chart' => $chart->build(), 'company' => $company, 'employee' => $employee,]);
+        // Mengambil tanggal awal bulan ini
+        $startOfMonth = Carbon::now()->startOfMonth();
+
+        // Mengambil tanggal akhir bulan ini
+        $endOfMonth = Carbon::now()->endOfMonth();
+
+        // Menjalankan query untuk mengambil daftar orang yang ulang tahun dalam 1 bulan ini
+        $upcomingBirthdays = DB::table('employee')->orderBy('tanggal_lahir_employee', 'ASC')
+            ->whereBetween(DB::raw('DATE_FORMAT(tanggal_lahir_employee, "%m-%d")'), [$startOfMonth->format('m-d'), $endOfMonth->format('m-d')])
+            ->get();
+
+        return Inertia::render('Hris/Index', ['chart' => $chart->build(), 'company' => $company, 'employee' => $employee, 'ulangTahun' => $upcomingBirthdays,]);
     }
 
     // employee function
@@ -74,7 +81,7 @@ class HrisController extends Controller
                 'tanggal_masuk_employee' => 'nullable|date',
                 'jenis_kelamin_employee' => 'required|string',
                 'tempat_lahir_employee' => 'required|string',
-                'tanggal_lahir_employee' => 'required|date',
+                'tanggal_lahir_employee_employee' => 'required|date',
                 'nik_karyawan_employee' => 'required|string',
                 'status_employee' => 'required|string',
                 'masa_kontrak_awal' => 'nullable|date',
@@ -107,7 +114,7 @@ class HrisController extends Controller
             $employee->tanggal_masuk_employee = $dataEmployee['tanggal_masuk_employee'];
             $employee->jenis_kelamin_employee = $dataEmployee['jenis_kelamin_employee'];
             $employee->tempat_lahir_employee = $dataEmployee['tempat_lahir_employee'];
-            $employee->tanggal_lahir_employee = $dataEmployee['tanggal_lahir_employee'];
+            $employee->tanggal_lahir_employee_employee = $dataEmployee['tanggal_lahir_employee_employee'];
             $employee->nik_karyawan_employee = $dataEmployee['nik_karyawan_employee'];
             $employee->status_employee = $dataEmployee['status_employee'];
             $employee->masa_kontrak_awal = $dataEmployee['masa_kontrak_awal'];
@@ -223,7 +230,7 @@ class HrisController extends Controller
                 'tanggal_masuk_employee' => 'nullable|date',
                 'jenis_kelamin_employee' => 'required|string',
                 'tempat_lahir_employee' => 'required|string',
-                'tanggal_lahir_employee' => 'required|date',
+                'tanggal_lahir_employee_employee' => 'required|date',
                 'nik_karyawan_employee' => 'required|string',
                 'status_employee' => 'required|string',
                 'masa_kontrak_awal' => 'nullable|date',
@@ -255,7 +262,7 @@ class HrisController extends Controller
             $karyawan->tanggal_masuk_employee = $dataEmployee['tanggal_masuk_employee'];
             $karyawan->jenis_kelamin_employee = $dataEmployee['jenis_kelamin_employee'];
             $karyawan->tempat_lahir_employee = $dataEmployee['tempat_lahir_employee'];
-            $karyawan->tanggal_lahir_employee = $dataEmployee['tanggal_lahir_employee'];
+            $karyawan->tanggal_lahir_employee_employee = $dataEmployee['tanggal_lahir_employee_employee'];
             $karyawan->nik_karyawan_employee = $dataEmployee['nik_karyawan_employee'];
             $karyawan->status_employee = $dataEmployee['status_employee'];
             $karyawan->masa_kontrak_awal = $dataEmployee['masa_kontrak_awal'];

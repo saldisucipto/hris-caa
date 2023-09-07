@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Employee extends Model
 {
@@ -12,6 +13,20 @@ class Employee extends Model
     protected $table = 'employee';
 
     protected $guarded = [];
+
+    // memperloleh ulang tahun karyawan
+    public static function ulangTahunKaryawan()
+    {
+
+        // mengambil tangal hari ini
+        $hariIni = Carbon::now('Asia/Jakarta');
+
+        // menghitung 7 hari kedepan
+        $tujuhHariKedepan = $hariIni->copy()->addDay(30);
+
+        return self::whereBetween('tanggal_lahir_employee', [$hariIni, $tujuhHariKedepan])->get();
+        // return $tujuhHariKedepan;
+    }
 
 
     public function perusahaan()

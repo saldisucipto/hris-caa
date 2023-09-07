@@ -80,21 +80,35 @@
                 class="flex-1 h-56 rounded-md bg-bg-primary flex flex-col gap-3 p-3 overflow-y-scroll"
             >
                 <div>
-                    <span class="font-semibold text-gray-700"
-                        >Notifikasi & Pengingat
-                    </span>
-                </div>
-                <div class="flex flex-col gap-2">
+                    <div class="mb-3">
+                        <span class="font-semibold text-gray-700 capitalize"
+                            >Ulang Tahun Karyawan Bulan Ini
+                            {{ this.ulangTahun.length }} Orang
+                        </span>
+                    </div>
                     <div
-                        class="bg-white rounded-md h-10 flex flex-col justify-center hover:bg-blue-300 hover:font-semibold hover:text-white"
+                        v-for="ulangTahunKaryawan in this.ulangTahun"
+                        class="flex flex-col gap-2"
                     >
-                        <div class="px-3 flex justify-between">
-                            <span class="text-sm">Ulang Tahun Karyawan</span>
-                            <span
-                                class="text-sm hape:flex hape:flex-col hape:text-center"
-                                ><b class="my-auto h-full">2</b>
-                                <span class="text-xs"> Karyawan</span>
-                            </span>
+                        <div
+                            class="bg-white rounded-md h-10 flex flex-col justify-center hover:bg-blue-300 hover:font-semibold hover:text-white"
+                        >
+                            <div class="px-3 flex justify-between">
+                                <span class="text-sm capitalize">{{
+                                    ulangTahunKaryawan.nama_employee
+                                }}</span>
+                                <span
+                                    class="text-sm hape:flex hape:flex-col hape:text-center"
+                                >
+                                    <span class="text-xs">
+                                        {{
+                                            showDate(
+                                                ulangTahunKaryawan.tanggal_lahir_employee
+                                            )
+                                        }}</span
+                                    >
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -140,8 +154,19 @@ export default {
         chart: Object,
         employee: Number,
         company: Number,
+        ulangTahun: Object,
     },
     layout: DashboardLayout,
+    methods: {
+        showDate(date) {
+            let dateTime = new Date(date).toLocaleDateString("id");
+            let dateNow = new Date();
+            var dateCalcualte =
+                dateNow.getFullYear() - new Date(date).getFullYear();
+
+            return dateTime + " " + dateCalcualte + " Tahun ";
+        },
+    },
 };
 </script>
 
