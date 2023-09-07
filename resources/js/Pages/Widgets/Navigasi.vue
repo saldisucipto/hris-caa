@@ -60,7 +60,7 @@
                     }"
                 >
                     <i class="fas fa-file-alt my-auto"></i>
-                    <span>Static Pages</span>
+                    <span>Surat Menyurat</span>
                 </div>
             </Link>
             <Link
@@ -75,8 +75,8 @@
                             $page.url.startsWith('/dashboard/blog-news'),
                     }"
                 >
-                    <i class="fas fa-newspaper my-auto"></i>
-                    <span>Blog And News</span>
+                    <i class="fas fa-box my-auto"></i>
+                    <span>Inventaris Data</span>
                 </div>
             </Link>
             <Link
