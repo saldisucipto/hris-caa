@@ -155,15 +155,22 @@ class HrisController extends Controller
 
     function changePicture(Request $request, $id = null)
     {
-        $data = $request->all();
         $karyawan = Employee::find($id);
-
         $fotoUpload = new FileProcess($request->file('fileData'), Str::slug($karyawan->nama_employee), 'foto');
-
         $foto = new Foto();
-        $foto->id_employee = $karyawan->id;
-        $foto->foto_profile = $fotoUpload->uploadFoto();
-        $foto->save();
+        $fotoExisits = Foto::where('id_employee', $id)->first();
+
+        if (!$fotoExisits) {
+            $foto->id_employee = $karyawan->id;
+            $foto->foto_profile = $fotoUpload->uploadFoto();
+            $foto->save();
+        } else {
+            $updateFoto = Foto::find($fotoExisits->id);
+            FileProcess::deleteFoto($updateFoto->foto_profile, 'foto');
+            $updateFoto->foto_profile = $fotoUpload->uploadFoto();
+            $updateFoto->update();
+        }
+
         return redirect()->back()->with('message', 'Berhasil Update Foto');
     }
 
