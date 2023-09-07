@@ -14,6 +14,7 @@ use App\Models\Bank;
 use App\Models\Company;
 use App\Models\Cuti;
 use App\Models\Employee;
+use App\Models\Foto;
 use App\Models\GradeEmployee;
 use App\Models\JenisCuti;
 use App\Models\JenisPeringatan;
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Str;
 
 class HrisController extends Controller
 {
@@ -151,10 +153,24 @@ class HrisController extends Controller
         }
     }
 
+    function changePicture(Request $request, $id = null)
+    {
+        $data = $request->all();
+        $karyawan = Employee::find($id);
+
+        $fotoUpload = new FileProcess($request->file('fileData'), Str::slug($karyawan->nama_employee), 'foto');
+
+        $foto = new Foto();
+        $foto->id_employee = $karyawan->id;
+        $foto->foto_profile = $fotoUpload->uploadFoto();
+        $foto->save();
+        return redirect()->back()->with('message', 'Berhasil Update Foto');
+    }
+
     // detail karyawan
     public function detailKaryawan($id = null)
     {
-        $karyawan = Employee::with(['perusahaan', 'grade', 'bank', 'resign'])->find($id);
+        $karyawan = Employee::with(['perusahaan', 'grade', 'bank', 'resign', 'foto'])->find($id);
         return Inertia::render('Hris/Employee/ShowEmployee', ['karyawan' => $karyawan]);
     }
 

@@ -1,17 +1,63 @@
 <template>
     <div class="p-3 bg-white flex flex-col">
+        <div
+            v-if="$page.props.flash.message"
+            class="mx-3 h-12 bg-green-400 rounded-lg flex flex-col justify-center"
+        >
+            <div class="mx-4 flex justify-between py-2">
+                <div class="my-auto font-semibold text-white">
+                    {{ $page.props.flash.message }}
+                </div>
+                <div class="flex gap-3">
+                    <button
+                        class="bg-white my-auto text-xs rounded-lg font-semibold py-2 px-3 text-green-400 hover:drop-shadow-sm"
+                        @click="$page.props.flash.message = null"
+                    >
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
         <!-- Main menu  -->
         <div class="bg-slate-100">
             <div class="flex flex-col gap-3 mx-auto">
                 <div class="grid grid-flow-col grid-cols-12 gap-2">
-                    <div class="col-span-2">
-                        <div class="w-full h-56 m-6">
+                    <div class="col-span-2 flex flex-col w-full">
+                        <div class="w-full h-56 mx-6 mt-6 bg-slate-300">
                             <img
-                                class="h-full w-full object-cover"
-                                src="https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80"
+                                v-if="karyawan.foto == null"
+                                :src="
+                                    this.fileData == null
+                                        ? '/assets/img/logo-caa.png'
+                                        : showPhoto()
+                                "
+                                class="w-full h-full object-cover"
+                                alt=""
+                            />
+
+                            <img
+                                v-else
+                                :src="
+                                    '/storage/img/foto/' +
+                                    karyawan.foto.foto_profile
+                                "
+                                class="w-full h-full object-cover"
                                 alt=""
                             />
                         </div>
+                        <form action="">
+                            <input
+                                class="text-xs mx-6 mt-2"
+                                type="file"
+                                @input="this.fileData = $event.target.files[0]"
+                            />
+                        </form>
+                        <button
+                            class="px-2 py-1 bg-blue-600 text-white mx-6 my-2 w-full text-xs"
+                            @click="changePicture(karyawan.id)"
+                        >
+                            Change Picture
+                        </button>
                     </div>
                     <div
                         class="col-span-10 drop-shadow-sm flex flex-col text-gray-800"
@@ -426,7 +472,7 @@ import { router, useForm } from "@inertiajs/vue3";
 export default {
     data() {
         return {
-            fileExcel: null,
+            fileData: null,
         };
     },
     components: {
@@ -447,9 +493,9 @@ export default {
     },
 
     methods: {
-        importForm() {
-            this.form.fileData = this.fileExcel;
-            router.post("/hris/karyawan/import-data-karyawan", this.form, {
+        changePicture(id) {
+            this.form.fileData = this.fileData;
+            router.post("/hris/karyawan/change-photo/" + id, this.form, {
                 preserveScroll: true,
                 onSuccess: () => {
                     this.form.reset();
@@ -471,6 +517,13 @@ export default {
             dateCalcualte =
                 dateNow.getFullYear() - new Date(date).getFullYear();
             return dateCalcualte;
+        },
+        uploadFoto() {
+            this.fileData = $event.target.files[0];
+        },
+
+        showPhoto() {
+            return URL.createObjectURL(this.fileData);
         },
     },
 

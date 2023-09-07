@@ -38,4 +38,9 @@ class Employee extends Model
     {
         return $this->hasMany(Cuti::class, 'id_employee', 'id')->with('jenisCuti');
     }
+
+    public function foto()
+    {
+        return $this->hasOne(Foto::class, 'id_employee', 'id');
+    }
 }

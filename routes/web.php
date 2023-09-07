@@ -37,6 +37,8 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
 
         Route::match(['get', 'delete'], '/delete-karyawan/{id}', [HrisController::class, 'deleteKaryawan']);
 
+        Route::post('/change-photo/{id}', [HrisController::class, 'changePicture']);
+
         // mutasi karyawan
         Route::prefix('/mutasi')->group(function () {
             Route::get('/', [HrisController::class, 'mutasi']);

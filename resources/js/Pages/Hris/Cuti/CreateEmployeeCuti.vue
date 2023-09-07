@@ -54,27 +54,26 @@
                                     disabled
                                 />
                             </div>
-                            <div class="flex flex-1 flex-col gap-2">
-                                <label class="text-gray-700 font-semibold"
-                                    >Sisa Cuti</label
-                                >
-                                <div class="text-xl font-semibold text-red-500">
-                                    {{ sisa_cuti }} Hari
-                                </div>
-                            </div>
+
                             <div class="flex flex-1 flex-col gap-2">
                                 <label class="text-gray-700 font-semibold"
                                     >Lama Cuti</label
                                 >
-                                <div class="text-xl font-semibold text-red-500">
-                                    {{ cutiForm.jumlah_cuti }} Hari
+                                <div class="flex justify-start gap-2">
+                                    <input
+                                        type="number"
+                                        min="0"
+                                        max="10"
+                                        class="drop-shadow-sm border py-2 px-3 rounded-md focus:outline-none text-sm w-20"
+                                        placeholder="Jumlah Cuti"
+                                        v-model="cutiForm.jumlah_cuti"
+                                    />
+                                    <div
+                                        class="text-xl font-semibold text-red-500"
+                                    >
+                                        {{ cutiForm.jumlah_cuti }} Hari
+                                    </div>
                                 </div>
-                                <input
-                                    type="text"
-                                    class="drop-shadow-sm border py-2 px-3 rounded-md focus:outline-none text-sm w-20"
-                                    placeholder="Jumlah Cuti"
-                                    v-model="cutiForm.jumlah_cuti"
-                                />
                             </div>
                         </div>
                         <div class="flex justify-center gap-3">
@@ -330,7 +329,6 @@ export default {
             modal: false,
             nama_karyawan: "",
             jabatan_employee: "",
-            sisa_cuti: 12,
             dataKaryawan: [],
             loading: false,
         };

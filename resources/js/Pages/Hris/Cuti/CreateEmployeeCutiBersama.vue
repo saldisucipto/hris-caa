@@ -84,6 +84,16 @@
                                     {{ cutiForm.jumlah_cuti }} Hari
                                 </div>
                             </div>
+                            <div class="flex flex-1 flex-col gap-2">
+                                <input
+                                    type="number"
+                                    min="0"
+                                    max="10"
+                                    class="drop-shadow-sm border py-2 px-3 rounded-md focus:outline-none text-sm w-20"
+                                    placeholder="Jumlah Cuti"
+                                    v-model="cutiForm.jumlah_cuti"
+                                />
+                            </div>
                         </div>
                         <div class="flex justify-center gap-3">
                             <div class="flex flex-1 flex-col gap-2">
