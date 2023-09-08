@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('foto_profile');
             $table->timestamps();
 
-            $table->foreign('id_employee')->references('id')->on('employee');
+            $table->foreign('id_employee')->references('id')->on('employee')->onDelete('CASCADE');
         });
     }
 

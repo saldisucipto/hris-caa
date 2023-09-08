@@ -37,7 +37,7 @@ class HrisController extends Controller
         $company = DB::table('company')->count();
         $employee = DB::table('employee')->count();
 
-        $peringatan = Peringatan::with(['jenisPeringatan', 'employee'])->get();
+        $peringatan = Peringatan::with(['jenisPeringatan', 'employee'])->get(['tanggal_peringatan', 'id_employee', 'id_jenis_peringatan']);
         // dd($peringatan);
         // Mengambil tanggal awal bulan ini
         $startOfMonth = Carbon::now()->startOfMonth();
@@ -48,12 +48,12 @@ class HrisController extends Controller
         // Menjalankan query untuk mengambil daftar orang yang ulang tahun dalam 1 bulan ini
         $upcomingBirthdays = DB::table('employee')->orderBy('tanggal_lahir_employee', 'ASC')
             ->whereBetween(DB::raw('DATE_FORMAT(tanggal_lahir_employee, "%m-%d")'), [$startOfMonth->format('m-d'), $endOfMonth->format('m-d')])
-            ->get();
+            ->get(['nama_employee', 'tanggal_lahir_employee']);
 
         $today = now();
         $kontrak = Employee::where('status_employee', 'pkwt')->whereDate('masa_kontrak_akhir', '<=', $today)
             ->whereDate('masa_kontrak_akhir', '>', $today->subDays(30))
-            ->get();
+            ->get(['nama_employee', 'jabatan_employee', 'masa_kontrak_akhir']);
 
 
         return Inertia::render('Hris/Index', ['peringatan' => $peringatan, 'company' => $company, 'employee' => $employee, 'ulangTahun' => $upcomingBirthdays, 'kontrak' => $kontrak]);
@@ -204,7 +204,7 @@ class HrisController extends Controller
     // delete karyawan
     public function deleteKaryawan(Request $request, $id = null)
     {
-        $karyawan = Employee::find($id);
+        $karyawan = Employee::findOrFail($id);
         if ($request->isMethod('GET')) {
             return Inertia::render('Hris/Employee/DeleteEmployee', ['karyawan' => $karyawan]);
         } elseif ($request->isMethod('DELETE')) {
@@ -242,12 +242,10 @@ class HrisController extends Controller
                 'id_grade' => 'required|numeric|max:1',
                 'tanggal_masuk_employee' => 'nullable|date',
                 'jenis_kelamin_employee' => 'required|string',
-                'tempat_lahir_employee' => 'required|string',
-                'tanggal_lahir_employee_employee' => 'required|date',
+                'tempat_lahir_employee' => 'nullable|string',
+                'tanggal_lahir_employee' => 'required|date',
                 'nik_karyawan_employee' => 'required|string',
                 'status_employee' => 'required|string',
-                'masa_kontrak_awal' => 'nullable|date',
-                'masa_kontrak_akhir' => 'nullable|date',
                 'bpjs_ks_employee' => 'nullable|string',
                 'bpjs_tk_employee' => 'nullable|string',
                 'npwp_employee' => 'nullable|string',
@@ -275,7 +273,7 @@ class HrisController extends Controller
             $karyawan->tanggal_masuk_employee = $dataEmployee['tanggal_masuk_employee'];
             $karyawan->jenis_kelamin_employee = $dataEmployee['jenis_kelamin_employee'];
             $karyawan->tempat_lahir_employee = $dataEmployee['tempat_lahir_employee'];
-            $karyawan->tanggal_lahir_employee_employee = $dataEmployee['tanggal_lahir_employee_employee'];
+            $karyawan->tanggal_lahir_employee = $dataEmployee['tanggal_lahir_employee'];
             $karyawan->nik_karyawan_employee = $dataEmployee['nik_karyawan_employee'];
             $karyawan->status_employee = $dataEmployee['status_employee'];
             $karyawan->masa_kontrak_awal = $dataEmployee['masa_kontrak_awal'];
@@ -290,7 +288,7 @@ class HrisController extends Controller
             $karyawan->status_pernikahan_employee = $dataEmployee['status_pernikahan_employee'];
             $karyawan->last_edu = $dataEmployee['last_edu'];
             $karyawan->update();
-            return redirect('/hris/karyawan/data-karyawan')->with('message', 'Berhasil Update' . $update->input('nama_employee'));
+            return redirect('/hris/karyawan/data-karyawan')->with('message', 'Berhasil Update ' . $update->input('nama_employee'));
         }
     }
 

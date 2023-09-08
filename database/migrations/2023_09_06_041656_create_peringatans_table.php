@@ -20,8 +20,8 @@ return new class extends Migration
             $table->boolean('active');
             $table->timestamps();
 
-            $table->foreign('id_employee')->references('id')->on('employee');
-            $table->foreign('id_jenis_peringatan')->references('id')->on('jenis_peringatan');
+            $table->foreign('id_employee')->references('id')->on('employee')->onDelete('CASCADE');
+            $table->foreign('id_jenis_peringatan')->references('id')->on('jenis_peringatan')->onDelete('CASCADE');
         });
     }
 

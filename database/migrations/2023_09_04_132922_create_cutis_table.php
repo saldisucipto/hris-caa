@@ -21,8 +21,8 @@ return new class extends Migration
             $table->integer('jumlah_cuti');
             $table->timestamps();
 
-            $table->foreign('id_jenis_cuti')->references('id')->on('jenis_cuti');
-            $table->foreign('id_employee')->references('id')->on('employee');
+            $table->foreign('id_jenis_cuti')->references('id')->on('jenis_cuti')->onDelete('CASCADE');
+            $table->foreign('id_employee')->references('id')->on('employee')->onDelete('CASCADE');
         });
     }
 

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('notes');
             $table->timestamps();
 
-            $table->foreign('id_employee')->references('id')->on('employee');
+            $table->foreign('id_employee')->references('id')->on('employee')->onDelete('CASCADE');
         });
     }
 
