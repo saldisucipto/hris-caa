@@ -27,11 +27,18 @@ use Illuminate\Support\Carbon;
 class HrisController extends Controller
 {
 
+    public function akhirPeringatan(date $date)
+    {
+        return date('Y-m-d', strtotime($date . ' + 6 months'));
+    }
     // home function
     public function index(VisitorCharts $chart)
     {
         $company = DB::table('company')->count();
         $employee = DB::table('employee')->count();
+
+        $peringatan = Peringatan::with(['jenisPeringatan', 'employee'])->get();
+        // dd($peringatan);
         // Mengambil tanggal awal bulan ini
         $startOfMonth = Carbon::now()->startOfMonth();
 
@@ -43,7 +50,7 @@ class HrisController extends Controller
             ->whereBetween(DB::raw('DATE_FORMAT(tanggal_lahir_employee, "%m-%d")'), [$startOfMonth->format('m-d'), $endOfMonth->format('m-d')])
             ->get();
 
-        return Inertia::render('Hris/Index', ['chart' => $chart->build(), 'company' => $company, 'employee' => $employee, 'ulangTahun' => $upcomingBirthdays,]);
+        return Inertia::render('Hris/Index', ['peringatan' => $peringatan, 'company' => $company, 'employee' => $employee, 'ulangTahun' => $upcomingBirthdays,]);
     }
 
     // employee function
