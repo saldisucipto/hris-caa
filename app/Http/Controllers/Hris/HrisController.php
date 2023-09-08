@@ -50,7 +50,13 @@ class HrisController extends Controller
             ->whereBetween(DB::raw('DATE_FORMAT(tanggal_lahir_employee, "%m-%d")'), [$startOfMonth->format('m-d'), $endOfMonth->format('m-d')])
             ->get();
 
-        return Inertia::render('Hris/Index', ['peringatan' => $peringatan, 'company' => $company, 'employee' => $employee, 'ulangTahun' => $upcomingBirthdays,]);
+        $today = now();
+        $kontrak = Employee::where('status_employee', 'pkwt')->whereDate('masa_kontrak_akhir', '<=', $today)
+            ->whereDate('masa_kontrak_akhir', '>', $today->subDays(30))
+            ->get();
+
+
+        return Inertia::render('Hris/Index', ['peringatan' => $peringatan, 'company' => $company, 'employee' => $employee, 'ulangTahun' => $upcomingBirthdays, 'kontrak' => $kontrak]);
     }
 
     // employee function

@@ -91,7 +91,7 @@
                         class="flex flex-col gap-2"
                     >
                         <div
-                            class="bg-white rounded-md h-10 flex flex-col justify-center hover:bg-blue-300 hover:font-semibold hover:text-white"
+                            class="bg-white rounded-md h-10 flex flex-col justify-center my-1 hover:bg-blue-300 hover:font-semibold hover:text-white"
                         >
                             <div class="px-3 flex justify-between">
                                 <span class="text-sm capitalize">{{
@@ -124,9 +124,9 @@
                         </span>
                     </div>
                     <div class="flex gap-2">
-                        <div class="flex-1 flex flex-col gap-2">
+                        <div class="flex-1 flex flex-col gap-2 overflow-y-auto">
                             <div class="font-semibold text-gray-700">
-                                <h1>Peringatan Aktif Karyawan</h1>
+                                <h1>Peringatan (SP) Aktif Karyawan</h1>
                             </div>
                             <div v-for="sp in this.peringatan">
                                 <div
@@ -163,19 +163,36 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex-1">
-                            <div
-                                class="bg-white rounded-md h-10 flex flex-col justify-center hover:bg-blue-300 hover:font-semibold hover:text-white"
-                            >
-                                <div class="px-3 flex justify-between">
-                                    <span class="text-sm"
-                                        >Ulang Tahun Karyawan</span
-                                    >
-                                    <span
-                                        class="text-sm hape:flex hape:flex-col hape:text-center"
-                                        ><b class="my-auto h-full">2</b>
-                                        <span class="text-xs"> Karyawan</span>
-                                    </span>
+                        <div class="flex-1 flex flex-col gap-2 overflow-y-auto">
+                            <div class="font-semibold text-gray-700">
+                                <h1>Notifikasi Kontrak Karyawan Berakhir</h1>
+                            </div>
+                            <div v-for="kt in this.kontrak">
+                                <div
+                                    class="bg-white rounded-md h-10 flex flex-col justify-center hover:bg-blue-300 hover:font-semibold hover:text-white"
+                                >
+                                    <div class="px-3 flex justify-between">
+                                        <span class="text-sm">{{
+                                            kt.nama_employee
+                                        }}</span>
+                                        <div
+                                            class="text-sm hape:flex hape:flex-col hape:text-center flex gap-2 my-auto"
+                                        >
+                                            <span class="text-xs text-blue-600">
+                                                {{ kt.jabatan_employee }}</span
+                                            >
+                                            <span
+                                                class="text-xs text-green-600"
+                                            >
+                                                Berakhir Pada =
+                                                {{
+                                                    new Date(
+                                                        kt.masa_kontrak_akhir
+                                                    ).toLocaleDateString("id")
+                                                }}</span
+                                            >
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -201,6 +218,7 @@ export default {
         company: Number,
         peringatan: Object,
         ulangTahun: Object,
+        kontrak: Object,
     },
     layout: DashboardLayout,
     methods: {
