@@ -7,8 +7,27 @@
         <!-- Endt Title Pages -->
 
         <!-- Main menu  -->
-        <div class="m-3 bg-slate-100 rounded-lg">
-            <div class="p-4">
+        <div
+            class="m-3 bg-slate-100 rounded-lg grid grid-flow-col grid-cols-12"
+        >
+            <div class="p-4 col-span-4">
+                <div class="w-full h-56">
+                    <img
+                        v-if="data.foto == null"
+                        :src="'/assets/img/logo-caa.png'"
+                        class="h-full"
+                        alt=""
+                    />
+
+                    <img
+                        v-else
+                        :src="'/storage/img/foto/' + data.foto.foto_profile"
+                        class="max-h-56 mx-auto object-cover"
+                        alt=""
+                    />
+                </div>
+            </div>
+            <div class="p-4 col-span-8">
                 <div class="w-full">
                     <table class="text-left w-full">
                         <tr class="h-8 hover:bg-white hover:h-10">
@@ -41,69 +60,79 @@
                         </tr>
                         <tr class="h-8 hover:bg-white hover:h-10">
                             <th class="px-2 font-semibold border-2">
-                                Sisa Cuti
+                                Masa Kerja
                             </th>
                             <td class="px-2 border-2 uppercase">
+                                {{
+                                    showDateCalculate(
+                                        data.tanggal_masuk_employee
+                                    ) + " Tahun"
+                                }}
+                            </td>
+                        </tr>
+                        <tr class="h-8 hover:bg-white hover:h-10">
+                            <th class="px-2 font-semibold border-2">
+                                Cuti Terpakai
+                            </th>
+                            <td class="px-2 border-2 uppercase">
+                                {{ jumlahCuti(data.cuti) }}
+                            </td>
+                        </tr>
+                        <tr class="h-8 hover:bg-white hover:h-10">
+                            <th class="px-2 font-semibold border-2">
+                                Sisa Cuti
+                            </th>
+                            <td
+                                class="px-2 border-2 uppercase bg-blue-300 text-white font-semibold"
+                            >
                                 {{ sisaCuti(data.cuti) }}
                             </td>
                         </tr>
                     </table>
-                    <div class="py-2 font-semibold text-md">
-                        <h1>Riwayat Cuti</h1>
-                    </div>
-                    <table class="w-full">
-                        <thead class="border h-10 bg-slate-50 text-sm">
-                            <th class="border font-semibold">No</th>
-                            <th class="border font-semibold">Jenis Cuti</th>
-                            <th class="border font-semibold">
-                                Tanggal Mulai Cuti
-                            </th>
-                            <th class="border font-semibold">
-                                Tanggal Akhir Cuti
-                            </th>
-                            <th class="border font-semibold">Jumlah Cuti</th>
-                            <th class="border font-semibold">
-                                Keterangan Cuti
-                            </th>
-                        </thead>
-                        <tbody
-                            class="border h-8 bg-slate-50 text-center text-sm"
-                        >
-                            <tr v-for="(cutiData, index) in data.cuti">
-                                <td class="border font-semibold">
-                                    {{ ++index }}
-                                </td>
-                                <td
-                                    class="border font-semibold capitalize text-left text-xs"
-                                >
-                                    {{ cutiData.jenis_cuti.jenis_cuti }}
-                                </td>
-                                <td class="border font-semibold">
-                                    {{ cutiData.tanggal_mulai_cuti }}
-                                </td>
-                                <td class="border font-semibold">
-                                    {{ cutiData.tanggal_akhir_cuti }}
-                                </td>
-                                <td class="border font-semibold">
-                                    {{ cutiData.jumlah_cuti }}
-                                </td>
-                                <td
-                                    colspan="4"
-                                    class="border font-normal text-left text-xs"
-                                >
-                                    {{ cutiData.keterangan_cuti }}
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="py-2 font-semibold text-md">
-                        <h1>Jumlah Cuti Yang Terpakai</h1>
-                        <span class="text-blue-600 text-lg">{{
-                            jumlahCuti(data.cuti)
-                        }}</span>
-                    </div>
                 </div>
             </div>
+        </div>
+        <div class="m-3">
+            <div class="py-2 font-semibold text-md">
+                <h1>Riwayat Cuti</h1>
+            </div>
+            <table class="w-full">
+                <thead class="border h-10 bg-slate-50 text-sm">
+                    <th class="border font-semibold">No</th>
+                    <th class="border font-semibold">Jenis Cuti</th>
+                    <th class="border font-semibold">Tanggal Mulai Cuti</th>
+                    <th class="border font-semibold">Tanggal Akhir Cuti</th>
+                    <th class="border font-semibold">Jumlah Cuti</th>
+                    <th class="border font-semibold">Keterangan Cuti</th>
+                </thead>
+                <tbody class="border h-8 bg-slate-50 text-center text-sm">
+                    <tr v-for="(cutiData, index) in data.cuti">
+                        <td class="border font-semibold">
+                            {{ ++index }}
+                        </td>
+                        <td
+                            class="border font-semibold capitalize text-left text-xs"
+                        >
+                            {{ cutiData.jenis_cuti.jenis_cuti }}
+                        </td>
+                        <td class="border font-semibold">
+                            {{ cutiData.tanggal_mulai_cuti }}
+                        </td>
+                        <td class="border font-semibold">
+                            {{ cutiData.tanggal_akhir_cuti }}
+                        </td>
+                        <td class="border font-semibold">
+                            {{ cutiData.jumlah_cuti }}
+                        </td>
+                        <td
+                            colspan="4"
+                            class="border font-normal text-left text-xs"
+                        >
+                            {{ cutiData.keterangan_cuti }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <!-- End Main Menu -->
     </div>
@@ -165,6 +194,18 @@ export default {
                 jumlah_cuti += element.jumlah_cuti;
             });
             return jumlah_cuti + " Hari";
+        },
+        showDateCalculate(date, resign = false, dateResign = null) {
+            let dateCalcualte = 0;
+            let dateNow = 0;
+            if (resign) {
+                dateNow = new Date(dateResign);
+            } else {
+                dateNow = new Date();
+            }
+            dateCalcualte =
+                dateNow.getFullYear() - new Date(date).getFullYear();
+            return dateCalcualte;
         },
     },
 

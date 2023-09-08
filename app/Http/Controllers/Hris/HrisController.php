@@ -90,11 +90,11 @@ class HrisController extends Controller
                 'agama_employee' => 'required|string',
                 'phone_employee' => 'required|string',
                 'email_employee' => 'required|string|email',
-                'id_grade' => 'required|numeric|max:1',
+                'id_grade' => 'required|numeric',
                 'tanggal_masuk_employee' => 'nullable|date',
                 'jenis_kelamin_employee' => 'required|string',
                 'tempat_lahir_employee' => 'required|string',
-                'tanggal_lahir_employee_employee' => 'required|date',
+                'tanggal_lahir_employee' => 'required|date',
                 'nik_karyawan_employee' => 'required|string',
                 'status_employee' => 'required|string',
                 'masa_kontrak_awal' => 'nullable|date',
@@ -102,7 +102,7 @@ class HrisController extends Controller
                 'bpjs_ks_employee' => 'nullable|string',
                 'bpjs_tk_employee' => 'nullable|string',
                 'npwp_employee' => 'nullable|string',
-                'id_bank' => 'numeric|max:1'
+                'id_bank' => 'numeric'
             ]);
             $dataEmployee = $create->all();
             $employee = new Employee();
@@ -127,7 +127,7 @@ class HrisController extends Controller
             $employee->tanggal_masuk_employee = $dataEmployee['tanggal_masuk_employee'];
             $employee->jenis_kelamin_employee = $dataEmployee['jenis_kelamin_employee'];
             $employee->tempat_lahir_employee = $dataEmployee['tempat_lahir_employee'];
-            $employee->tanggal_lahir_employee_employee = $dataEmployee['tanggal_lahir_employee_employee'];
+            $employee->tanggal_lahir_employee = $dataEmployee['tanggal_lahir_employee'];
             $employee->nik_karyawan_employee = $dataEmployee['nik_karyawan_employee'];
             $employee->status_employee = $dataEmployee['status_employee'];
             $employee->masa_kontrak_awal = $dataEmployee['masa_kontrak_awal'];
@@ -239,7 +239,7 @@ class HrisController extends Controller
                 'agama_employee' => 'required|string',
                 'phone_employee' => 'required|string',
                 'email_employee' => 'required|string|email',
-                'id_grade' => 'required|numeric|max:1',
+                'id_grade' => 'required|numeric',
                 'tanggal_masuk_employee' => 'nullable|date',
                 'jenis_kelamin_employee' => 'required|string',
                 'tempat_lahir_employee' => 'nullable|string',
@@ -249,7 +249,7 @@ class HrisController extends Controller
                 'bpjs_ks_employee' => 'nullable|string',
                 'bpjs_tk_employee' => 'nullable|string',
                 'npwp_employee' => 'nullable|string',
-                'id_bank' => 'numeric|max:1'
+                'id_bank' => 'numeric'
             ]);
             $dataEmployee = $update->all();
 
@@ -446,7 +446,7 @@ class HrisController extends Controller
     function detailsCuti(Request $request, $id = null)
     {
         if ($request->isMethod('GET')) {
-            $detailCuti = Employee::with('cuti')->find($id);
+            $detailCuti = Employee::with(['cuti', 'foto'])->find($id);
             return Inertia::render('Hris/Cuti/EmployeeCutiDetails', ['data' => $detailCuti]);
         }
     }
