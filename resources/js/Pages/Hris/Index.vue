@@ -199,20 +199,8 @@ export default {
         chart: Object,
         employee: Number,
         company: Number,
-<<<<<<< HEAD
-        ulangTahun: Object,
-    },
-    layout: DashboardLayout,
-    methods: {
-        showDate(date) {
-            let dateTime = new Date(date).toLocaleDateString("id");
-            let dateNow = new Date();
-            var dateCalcualte =
-                dateNow.getFullYear() - new Date(date).getFullYear();
-
-            return dateTime + " " + dateCalcualte + " Tahun ";
-=======
         peringatan: Object,
+        ulangTahun: Object,
     },
     layout: DashboardLayout,
     methods: {
@@ -243,7 +231,14 @@ export default {
             }
 
             return status;
->>>>>>> 8642aceab3a05226a838aab578de8fa4082e687d
+        },
+        showDate(date) {
+            let dateTime = new Date(date).toLocaleDateString("id");
+            let dateNow = new Date();
+            var dateCalcualte =
+                dateNow.getFullYear() - new Date(date).getFullYear();
+
+            return dateTime + " " + dateCalcualte + " Tahun ";
         },
     },
 };
