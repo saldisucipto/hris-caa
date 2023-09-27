@@ -80,6 +80,22 @@
                 </div>
             </Link>
             <Link
+                href="/dashboard/laporan"
+                class="text-bold rounded-md text-gray-700 hover:text-primary-color"
+            >
+                <div
+                    class="flex gap-2 px-3 py-2"
+                    :class="{
+                        'hover: text-white hover: text-bold bg-blue-400 rounded-md':
+                            $page.url === '/dashboard/laporan' ||
+                            $page.url.startsWith('/dashboard/laporan'),
+                    }"
+                >
+                    <i class="fas fa-info my-auto mx-1"></i>
+                    <span>Laporan</span>
+                </div>
+            </Link>
+            <Link
                 href="/dashboard/konfigurasi"
                 class="text-bold rounded-md text-gray-700 hover:text-primary-color"
             >

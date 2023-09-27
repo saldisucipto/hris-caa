@@ -9,6 +9,7 @@ use App\Http\Controllers\Hris\HrisController;
 use Illuminate\Support\Facades\Route;
 use App\Models\AnalisisPengunjung;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Hris\LaporanController;
 
 // auth route
 Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
@@ -211,6 +212,11 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
         Route::post('/create-data', [MasterDataController::class, 'createBlogNews']);
         Route::post('/update-data/{id}', [MasterDataController::class, 'updateBlogNews']);
         Route::delete('/delete-data/{id}', [MasterDataController::class, 'deleteBlogNews']);
+    });
+
+    Route::prefix('/laporan')->group(function () {
+        Route::get('/', [LaporanController::class, 'index']);
+        Route::get('/karyawan', [LaporanController::class, 'karyawan']);
     });
 });
 
