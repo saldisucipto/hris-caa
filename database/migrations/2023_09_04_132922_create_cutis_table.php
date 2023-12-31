@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('tanggal_akhir_cuti');
             $table->text('keterangan_cuti');
             $table->integer('jumlah_cuti');
-            $table->timestamps();
+            // $table->timestamps();
 
             $table->foreign('id_jenis_cuti')->references('id')->on('jenis_cuti')->onDelete('CASCADE');
             $table->foreign('id_employee')->references('id')->on('employee')->onDelete('CASCADE');
