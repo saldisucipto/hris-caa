@@ -380,6 +380,8 @@ class HrisController extends Controller
         $data = Employee::with('cuti')->where('status_employee', '!=', 'resign')->where('nama_employee', 'like', "%" . $filter['saerch_nama_karyawan'] . "%")->paginate($filter['countDisplay'])->withQueryString();;
         $karyawan = Employee::where('status_employee', '!=', 'resign')->where('nama_employee', 'like', "%" . $filter['saerch_nama_karyawan'] . "%")->paginate(7)->withQueryString();;
 
+        // dd($data[0]);
+
         if ($request->isMethod('POST')) {
             return response()->json(['karyawan' => $karyawan], 200);
         } else {

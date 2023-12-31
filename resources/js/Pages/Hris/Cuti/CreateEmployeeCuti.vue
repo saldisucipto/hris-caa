@@ -108,8 +108,6 @@
                                 >
                                 <input
                                     type="date"
-                                    min="2023-01-01"
-                                    max="2023-12-31"
                                     class="drop-shadow-sm border py-2 px-3 rounded-md focus:outline-none text-sm"
                                     placeholder="Jabatan Karyawan"
                                     v-model="cutiForm.tanggal_mulai_cuti"
@@ -127,8 +125,6 @@
                                 >
                                 <input
                                     type="date"
-                                    min="2023-01-01"
-                                    max="2023-12-31"
                                     class="drop-shadow-sm border py-2 px-3 rounded-md focus:outline-none text-sm"
                                     v-model="cutiForm.tanggal_akhir_cuti"
                                     @change="kalkulasiTanggal()"

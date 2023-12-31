@@ -51,7 +51,7 @@ class Employee extends Model
 
     public function cuti()
     {
-        return $this->hasMany(Cuti::class, 'id_employee', 'id')->with('jenisCuti')->orderBy('tanggal_mulai_cuti');
+        return $this->hasMany(Cuti::class, 'id_employee', 'id')->with('jenisCuti')->whereYear('tanggal_mulai_cuti', '=', date('Y'))->orderBy('tanggal_mulai_cuti');
     }
 
     public function foto()
