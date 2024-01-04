@@ -18,6 +18,6 @@ class Peringatan extends Model
 
     public function employee()
     {
-        return $this->hasOne(Employee::class, 'id', 'id_employee');
+        return $this->hasOne(Employee::class, 'id', 'id_employee')->where('status_employee', '!=', 'resign');
     }
 }

@@ -35,7 +35,7 @@ class HrisController extends Controller
     public function index(VisitorCharts $chart)
     {
         $company = DB::table('company')->count();
-        $employee = DB::table('employee')->count();
+        $employee = DB::table('employee')->where('status_employee', '!=', 'resign')->count();
 
         $peringatan = Peringatan::with(['jenisPeringatan', 'employee'])->get(['tanggal_peringatan', 'id_employee', 'id_jenis_peringatan']);
         // dd($peringatan);
@@ -46,7 +46,7 @@ class HrisController extends Controller
         $endOfMonth = Carbon::now()->endOfMonth();
 
         // Menjalankan query untuk mengambil daftar orang yang ulang tahun dalam 1 bulan ini
-        $upcomingBirthdays = DB::table('employee')->orderBy('tanggal_lahir_employee', 'ASC')
+        $upcomingBirthdays = DB::table('employee')->where('status_employee', '!=', 'resign')->orderBy('tanggal_lahir_employee', 'ASC')
             ->whereBetween(DB::raw('DATE_FORMAT(tanggal_lahir_employee, "%m-%d")'), [$startOfMonth->format('m-d'), $endOfMonth->format('m-d')])
             ->get(['nama_employee', 'tanggal_lahir_employee']);
 
