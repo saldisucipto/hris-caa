@@ -37,7 +37,7 @@ class HrisController extends Controller
         $company = DB::table('company')->count();
         $employee = DB::table('employee')->where('status_employee', '!=', 'resign')->count();
 
-        $peringatan = Peringatan::with(['jenisPeringatan', 'employee'])->get(['tanggal_peringatan', 'id_employee', 'id_jenis_peringatan']);
+        $peringatan = Peringatan::with(['jenisPeringatan', 'employee'])->get(['tanggal_peringatan', 'id_employee', 'id_jenis_peringatan'])->whereBetween('tanggal_peringatan', ['tanggal_peringatan', Carbon::now()]);
         // dd($peringatan);
         // Mengambil tanggal awal bulan ini
         $startOfMonth = Carbon::now()->startOfMonth();
