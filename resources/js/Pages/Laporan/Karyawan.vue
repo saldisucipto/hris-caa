@@ -12,47 +12,56 @@
                 <div
                     class="h-10 bg-white rounded-lg flex flex-col justify-center px-2"
                 >
-                    <div class="flex gap-2">
-                        <select
-                            class="text-xs bg-slate-50 border rounded-md focus:border-none active:border-none focus:outline-none py-1"
-                            name=""
-                            id=""
-                        >
-                            <option selected value="">Semua Karyawan</option>
-                            <option value="">PT. Cipta Aneka Air</option>
-                            <option value="">PT. Cipta Aneka Servis</option>
-                            <option value="">
-                                PT. Ragam Adi Catur Esajaya
-                            </option>
-                        </select>
-                        <div class="flex gap-1 text-xs">
-                            <input
-                                type="checkbox"
-                                placeholder="Dengan Masa Kerja"
+                    <div class="flex justify-between">
+                        <div class="flex gap-3">
+                            <select
+                                class="text-sm font-semibold border rounded-md focus:border-none active:border-none focus:outline-none p-2"
                                 name=""
-                                id=""
-                            />
-                            <label class="my-auto" for="">Masa Kerja</label>
-                        </div>
-                        <div class="flex gap-1 text-xs">
-                            <input
-                                type="checkbox"
-                                placeholder="Dengan Masa Kerja"
-                                name=""
-                                id=""
-                            />
-                            <label class="my-auto" for="">Sisa Cuti</label>
-                        </div>
-                        <div class="flex gap-1 text-xs">
-                            <input
-                                type="checkbox"
-                                placeholder="Dengan Masa Kerja"
-                                name=""
-                                id=""
-                            />
-                            <label class="my-auto" for=""
-                                >Status Karyawan</label
+                                v-model="perusahaan"
                             >
+                                <option
+                                    v-for="companyData in company"
+                                    :value="companyData.id"
+                                >
+                                    {{ companyData.nama_company }}
+                                </option>
+                            </select>
+                            <div class="flex gap-1 text-xs">
+                                <input
+                                    type="checkbox"
+                                    placeholder="Dengan Masa Kerja"
+                                    name=""
+                                    id=""
+                                />
+                                <label class="my-auto" for="">Masa Kerja</label>
+                            </div>
+                            <div class="flex gap-1 text-xs">
+                                <input
+                                    type="checkbox"
+                                    placeholder="Dengan Masa Kerja"
+                                    name=""
+                                    id=""
+                                />
+                                <label class="my-auto" for="">Sisa Cuti</label>
+                            </div>
+                            <div class="flex gap-1 text-xs">
+                                <input
+                                    type="checkbox"
+                                    placeholder="Dengan Masa Kerja"
+                                    name=""
+                                    id=""
+                                />
+                                <label class="my-auto" for=""
+                                    >Status Karyawan</label
+                                >
+                            </div>
+                        </div>
+                        <div class="my-auto">
+                            <button
+                                class="px-2 py-1 bg-blue-400 rounded-md text-sm font-semibold text-gray-50"
+                            >
+                                Proses Laporan
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -71,6 +80,11 @@ import TitlePages from "../Widgets/TitlePages.vue";
 import CardLapData from "../Widgets/CardLapData.vue";
 
 export default {
+    data() {
+        return {
+            perusahaan: 1,
+        };
+    },
     components: {
         Navigasi,
         DashboardLayout,
@@ -78,7 +92,7 @@ export default {
         CardLapData,
     },
     props: {
-        chart: Object,
+        company: Object,
     },
     layout: DashboardLayout,
 };
