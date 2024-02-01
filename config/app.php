@@ -185,9 +185,6 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'Example' => App\Facades\Example::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
-        'PdfReport' => Jimmyjs\ReportGenerator\Facades\PdfReportFacade::class,
-        'ExcelReport' => Jimmyjs\ReportGenerator\Facades\ExcelReportFacade::class,
-        'CSVReport' => Jimmyjs\ReportGenerator\Facades\CSVReportFacade::class,
     ])->toArray(),
 
 ];
