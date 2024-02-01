@@ -15,11 +15,4 @@ class LaporanController extends Controller
     {
         return Inertia::render('Laporan/Index');
     }
-
-    // karyawan
-    public function karyawan()
-    {
-        $companyData = Company::get(['nama_company', 'id']);
-        return Inertia::render('Laporan/Karyawan', ['company' => $companyData]);
-    }
 }

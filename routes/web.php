@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Route;
 use App\Models\AnalisisPengunjung;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Hris\LaporanController;
+use App\Http\Controllers\Hris\LaporanKaryawanController;
 
 // auth route
 Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
@@ -69,6 +70,11 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
             Route::match(['get', 'post'], '/create', [HrisController::class, 'createPringatan']);
             Route::post('/delete/{id}', [HrisController::class, 'deletePeringatan']);
         });
+    });
+    // laporan
+    Route::prefix('/laporan')->group(function () {
+        // karyawan
+        Route::post('/karyawan', [LaporanKaryawanController::class, 'laporanKaryawan']);
     });
 });
 
@@ -216,7 +222,7 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
 
     Route::prefix('/laporan')->group(function () {
         Route::get('/', [LaporanController::class, 'index']);
-        Route::get('/karyawan', [LaporanController::class, 'karyawan']);
+        Route::get('/karyawan', [LaporanKaryawanController::class, 'karyawan']);
     });
 });
 

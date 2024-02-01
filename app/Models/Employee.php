@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Ramsey\Uuid\Type\Integer;
 
 class Employee extends Model
 {
@@ -27,6 +29,7 @@ class Employee extends Model
         return self::whereBetween('tanggal_lahir_employee', [$hariIni, $tujuhHariKedepan])->get();
         // return $tujuhHariKedepan;
     }
+
 
 
     public function perusahaan()
@@ -57,5 +60,11 @@ class Employee extends Model
     public function foto()
     {
         return $this->hasOne(Foto::class, 'id_employee', 'id');
+    }
+
+
+    public static function getEmployeData(int $companyId): Collection
+    {
+        return self::where('id_company', $companyId)->whereNot('status_employee', 'resign')->with(['perusahaan', 'cuti'])->get(['nama_employee', 'nik_employee', 'nik_karyawan_employee', 'jabatan_employee', 'jenis_kelamin_employee', 'tanggal_lahir_employee', 'tanggal_masuk_employee', 'status_employee',]);
     }
 }
