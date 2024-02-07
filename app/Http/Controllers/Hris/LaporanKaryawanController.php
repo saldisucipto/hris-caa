@@ -8,6 +8,9 @@ use App\Models\Company;
 use App\Models\Employee;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Inertia\Inertia;
+use Dompdf\Dompdf;
+
+use function Termwind\render;
 
 class LaporanKaryawanController extends Controller
 {
@@ -21,5 +24,8 @@ class LaporanKaryawanController extends Controller
     {
         $company = $request->company;
         $data = Employee::getEmployeData($company);
+        return view('hallo');
+        // return Inertia::render('Prints/PrintLaporanKaryawan', ['data' => $data]);
+
     }
 }

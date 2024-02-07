@@ -10,6 +10,7 @@
             <card-lap-data :linkTujuan="'karyawan'" :iconData="'fa-users'"
                 >Laporan Karyawan</card-lap-data
             >
+
             <!-- <card-master-data :linkTujuan="'servis'" :iconData="'fa-users-cog'"
                 >Master Jasa & Sevices</card-master-data
             >
