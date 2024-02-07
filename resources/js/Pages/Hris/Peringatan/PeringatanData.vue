@@ -142,15 +142,13 @@
                                 {{ tanggalBerakhir(data.tanggal_peringatan) }}
                             </td>
                             <td
-                                v-if="statusPeringatan(data.tanggal_peringatan)"
+                                v-if="data.active"
                                 class="whitespace-nowrap px-4 py-2 font-medium text-green-600"
                             >
                                 Active
                             </td>
                             <td
-                                v-else="
-                                    statusPeringatan(data.tanggal_peringatan)
-                                "
+                                v-else
                                 class="whitespace-nowrap px-4 py-2 font-medium text-gray-600"
                             >
                                 Done

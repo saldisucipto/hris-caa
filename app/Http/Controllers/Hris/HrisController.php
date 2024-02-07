@@ -23,6 +23,7 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+use App\Http\Class\CekTanggal;
 
 class HrisController extends Controller
 {
@@ -37,8 +38,7 @@ class HrisController extends Controller
         $company = DB::table('company')->count();
         $employee = DB::table('employee')->where('status_employee', '!=', 'resign')->count();
 
-        $peringatan = Peringatan::with(['jenisPeringatan', 'employee'])->get(['tanggal_peringatan', 'id_employee', 'id_jenis_peringatan'])->whereBetween('tanggal_peringatan', ['tanggal_peringatan', Carbon::now()]);
-        // dd($peringatan);
+        $peringatan = Peringatan::with(['jenisPeringatan', 'employee'])->where('active', true)->get(['tanggal_peringatan', 'id_employee', 'id_jenis_peringatan']);
         // Mengambil tanggal awal bulan ini
         $startOfMonth = Carbon::now()->startOfMonth();
 
@@ -51,8 +51,7 @@ class HrisController extends Controller
             ->get(['nama_employee', 'tanggal_lahir_employee']);
 
         $today = now();
-        $kontrak = Employee::where('status_employee', 'pkwt')->whereDate('masa_kontrak_akhir', '<=', $today)
-            ->whereDate('masa_kontrak_akhir', '>', $today->subDays(30))
+        $kontrak = Employee::where('status_employee', 'pkwt')->whereDate('masa_kontrak_akhir', '>=', $today->subDays(90))
             ->get(['nama_employee', 'jabatan_employee', 'masa_kontrak_akhir']);
 
 
@@ -456,7 +455,20 @@ class HrisController extends Controller
     // surat peringat
     function suratPeringatan(Request $request)
     {
+        // check data peringatan
         if ($request->isMethod('GET')) {
+            $dataPeringatan = Peringatan::with(['jenisPeringatan'])->get(['id', 'tanggal_peringatan', 'id_jenis_peringatan', 'active']);
+            foreach ($dataPeringatan as $data) {
+                if ($data->active) {
+                    $tanggal_aktif = Carbon::parse($data->tanggal_peringatan)->addMonths($data->jenisPeringatan->lama_peringatan);
+                    $masa_aktif = CekTanggal::cek_masa_aktif($tanggal_aktif);
+                    if ($masa_aktif) {
+                        $dtPeringatan = Peringatan::find($data->id);
+                        $dtPeringatan->active = 0;
+                        $dtPeringatan->update();
+                    }
+                }
+            }
             $filter = [
                 'saerch_nama_karyawan' => $request->saerch_nama_karyawan ? $request->saerch_nama_karyawan : "",
                 'countDisplay' =>  $request->countData ? $request->countData : 15,

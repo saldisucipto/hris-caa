@@ -116,7 +116,7 @@
         </div>
 
         <div>
-            <div class="rounded-md bg-bg-primary h-80 relative">
+            <div class="rounded-md bg-bg-primary h-80 relative overflow-hidden">
                 <div class="flex flex-col m-2 py-3 gap-4">
                     <div>
                         <span class="font-semibold text-gray-800"
@@ -163,34 +163,46 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex-1 flex flex-col gap-2 overflow-y-auto">
+                        <div
+                            class="flex-1 flex flex-col gap-2 overflow-y-hidden"
+                        >
                             <div class="font-semibold text-gray-700">
                                 <h1>Notifikasi Kontrak Karyawan Berakhir</h1>
                             </div>
-                            <div v-for="kt in this.kontrak">
-                                <div
-                                    class="bg-white rounded-md h-10 flex flex-col justify-center hover:bg-blue-300 hover:font-semibold hover:text-white"
-                                >
-                                    <div class="px-3 flex justify-between">
-                                        <span class="text-sm">{{
-                                            kt.nama_employee
-                                        }}</span>
-                                        <div
-                                            class="text-sm hape:flex hape:flex-col hape:text-center flex gap-2 my-auto"
-                                        >
-                                            <span class="text-xs text-blue-600">
-                                                {{ kt.jabatan_employee }}</span
+                            <div
+                                class="flex flex-col gap-2 h-52 overflow-y-scroll my-2"
+                            >
+                                <div v-for="kt in this.kontrak">
+                                    <div
+                                        class="bg-white rounded-md h-10 flex flex-col justify-center hover:bg-blue-300 hover:font-semibold hover:text-white"
+                                    >
+                                        <div class="px-3 flex justify-between">
+                                            <span class="text-sm">{{
+                                                kt.nama_employee
+                                            }}</span>
+                                            <div
+                                                class="text-sm hape:flex hape:flex-col hape:text-center flex gap-2 my-auto"
                                             >
-                                            <span
-                                                class="text-xs text-green-600"
-                                            >
-                                                Berakhir Pada =
-                                                {{
-                                                    new Date(
-                                                        kt.masa_kontrak_akhir
-                                                    ).toLocaleDateString("id")
-                                                }}</span
-                                            >
+                                                <span
+                                                    class="text-xs text-blue-600"
+                                                >
+                                                    {{
+                                                        kt.jabatan_employee
+                                                    }}</span
+                                                >
+                                                <span
+                                                    class="text-xs text-green-600"
+                                                >
+                                                    Berakhir Pada =
+                                                    {{
+                                                        new Date(
+                                                            kt.masa_kontrak_akhir
+                                                        ).toLocaleDateString(
+                                                            "id"
+                                                        )
+                                                    }}</span
+                                                >
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
