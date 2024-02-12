@@ -6,11 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LaporanKaryawanRequest;
 use App\Models\Company;
 use App\Models\Employee;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Inertia\Inertia;
-use Dompdf\Dompdf;
-
-use function Termwind\render;
 
 class LaporanKaryawanController extends Controller
 {
@@ -24,7 +21,8 @@ class LaporanKaryawanController extends Controller
     {
         $company = $request->company;
         $data = Employee::getEmployeData($company);
-        return view('hallo');
+        $pdf = FacadePdf::loadView('hallo', ['data', $data]);
+        return $pdf->stream('test.pdf');
         // return Inertia::render('Prints/PrintLaporanKaryawan', ['data' => $data]);
 
     }

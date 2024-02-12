@@ -76,12 +76,6 @@
                 <div class="text-xs px-1 text-red-600" v-if="errors.company">
                     {{ errors.company }}
                 </div>
-                <form
-                    action="/hris/laporan/karyawan"
-                    method="                                "
-                >
-                    <button>go</button>
-                </form>
             </div>
         </div>
         <!-- End Konten Laporan -->
