@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Hris;
 
+use App\Exports\KaryawanExport;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LaporanKaryawanRequest;
 use App\Models\Company;
 use App\Models\Employee;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Inertia\Inertia;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanKaryawanController extends Controller
 {
@@ -20,10 +22,6 @@ class LaporanKaryawanController extends Controller
     public function laporanKaryawan(LaporanKaryawanRequest $request)
     {
         $company = $request->company;
-        $data = Employee::getEmployeData($company);
-        $pdf = FacadePdf::loadView('hallo', ['data', $data]);
-        return $pdf->stream('test.pdf');
-        // return Inertia::render('Prints/PrintLaporanKaryawan', ['data' => $data]);
-
+        return Excel::download(new KaryawanExport($company),  'karyawan.xlsx');
     }
 }

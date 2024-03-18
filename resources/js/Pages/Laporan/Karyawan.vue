@@ -31,36 +31,6 @@
                                     {{ companyData.nama_company }}
                                 </option>
                             </select>
-
-                            <!-- <div class="flex gap-1 text-xs">
-                                <input
-                                    type="checkbox"
-                                    placeholder="Dengan Masa Kerja"
-                                    name=""
-                                    id=""
-                                />
-                                <label class="my-auto" for="">Masa Kerja</label>
-                            </div>
-                            <div class="flex gap-1 text-xs">
-                                <input
-                                    type="checkbox"
-                                    placeholder="Dengan Masa Kerja"
-                                    name=""
-                                    id=""
-                                />
-                                <label class="my-auto" for="">Sisa Cuti</label>
-                            </div>
-                            <div class="flex gap-1 text-xs">
-                                <input
-                                    type="checkbox"
-                                    placeholder="Dengan Masa Kerja"
-                                    name=""
-                                    id=""
-                                />
-                                <label class="my-auto" for=""
-                                    >Status Karyawan</label
-                                >
-                            </div> -->
                         </div>
 
                         <div class="my-auto">
