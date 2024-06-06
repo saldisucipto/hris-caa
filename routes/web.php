@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Hris\LaporanController;
 use App\Http\Controllers\Hris\LaporanKaryawanController;
 
+
 // auth route
 Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout']);
@@ -74,7 +75,7 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
     // laporan
     Route::prefix('/laporan')->group(function () {
         // karyawan
-        Route::post('/karyawan', [LaporanKaryawanController::class, 'laporanKaryawan']);
+        Route::get('/karyawan', [LaporanKaryawanController::class, 'laporanKaryawan']);
     });
 });
 
@@ -222,7 +223,13 @@ Route::prefix('/dashboard')->middleware('auth')->group(function () {
 
     Route::prefix('/laporan')->group(function () {
         Route::get('/', [LaporanController::class, 'index']);
-        Route::get('/karyawan', [LaporanKaryawanController::class, 'karyawan']);
+        Route::get('/karyawan', function (Codedge\Fpdf\Fpdf\Fpdf $fpdf) {
+            $fpdf->AddPage();
+            $fpdf->SetFont('Courier', 'B', 18);
+            $fpdf->Cell(50, 25, 'Hello World!');
+            $fpdf->Output();
+            exit;
+        });
     });
 });
 

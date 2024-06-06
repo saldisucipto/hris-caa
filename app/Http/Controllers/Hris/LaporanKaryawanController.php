@@ -22,6 +22,7 @@ class LaporanKaryawanController extends Controller
     public function laporanKaryawan(LaporanKaryawanRequest $request)
     {
         $company = $request->company;
-        return Excel::download(new KaryawanExport($company),  'karyawan.xlsx');
+        Excel::download(new KaryawanExport(), 'users.xlsx');
+        return redirect()->back();
     }
 }

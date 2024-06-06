@@ -10,13 +10,13 @@ class KaryawanExport implements FromCollection
     /**
      * @return \Illuminate\Support\Collection
      */
-    public String $id_company;
-    public function __construct($id_company)
-    {
-        $this->id_company = $id_company;
-    }
+    // public String $id_company;
+    // public function __construct($id_company)
+    // {
+    //     $this->id_company = $id_company;
+    // }
     public function collection()
     {
-        return Employee::getEmployeData($this->id_company);
+        return Employee::select('id')->get();
     }
 }

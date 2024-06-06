@@ -87,7 +87,7 @@ export default {
     methods: {
         prosesLaporan() {
             this.formReport.company = this.perusahaan;
-            router.post("/hris/laporan/karyawan", this.formReport, {
+            router.get("/hris/laporan/karyawan", this.formReport, {
                 preserveScroll: true,
                 onSuccess: () => {
                     this.formReport.reset();
