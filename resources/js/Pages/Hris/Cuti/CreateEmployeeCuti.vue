@@ -187,9 +187,8 @@
                             type="search"
                             class="drop-shadow-sm border py-1 px-3 rounded-md focus:outline-none text-sm w-full"
                             v-model="form.saerch_nama_karyawan"
-                            name=""
                             placeholder="Cari Data Karyawan"
-                            id=""
+                            autofocus
                         />
                         <button
                             class="bg-red-400 px-3 py-1 rounded-full text-white text-sm"

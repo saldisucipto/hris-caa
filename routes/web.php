@@ -76,6 +76,7 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
     Route::prefix('/laporan')->group(function () {
         // karyawan
         Route::get('/karyawan', [LaporanKaryawanController::class, 'laporanKaryawan']);
+        Route::post('/laporan-karyawan', [LaporanController::class, 'laporan_karyawan']);
     });
 });
 
@@ -84,7 +85,7 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
 
 // dashboard
 Route::prefix('/dashboard')->middleware('auth')->group(function () {
-    Route::get('/', [DashboardController::class, 'index']);
+    Route::get('/', [HrisController::class, 'index'])->name('indexHris');
 
     Route::post('/user/{id}', [AuthController::class, 'updateProfile']);
 

@@ -13,6 +13,16 @@ class LaporanController extends Controller
     // index function
     public function index()
     {
-        return Inertia::render('Laporan/Index');
+        $companyData = Company::get(['nama_company', 'id']);
+        return Inertia::render('Laporan/Index', ['company' => $companyData]);
+    }
+
+    // Laporan Karyawan
+    function laporan_karyawan(Request $request)
+    {
+
+        $reportData = $request->all();
+        dd($reportData);
+        return Inertia::render("/Laporan/Karyawan", ['report_data' => $reportData]);
     }
 }
