@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Hris;
 
+use App\Exports\EmployeExport;
 use App\Http\Controllers\Controller;
 use App\Models\Company;
 use App\Models\Employee;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LaporanController extends Controller
 {
@@ -19,15 +21,8 @@ class LaporanController extends Controller
     }
 
     // Laporan Karyawan
-    function laporan_karyawan(Request $request)
+    function laporan_karyawan()
     {
-
-        $reportData = $request->all();
-        // dd($reportData);
-        $pdf_data = PDF::loadView('hallo', ['data' => $reportData]);
-        $pdf_data->loadHTML('<h1> hallo </h1>');
-
-        // return $pdf_data->stream();
-        // return Inertia::render("/Laporan/Karyawan", ['report_data' => $reportData]);
+        return Excel::download(new EmployeExport, 'Data Karyawan ' . Carbon::now('Asia/Jakarta')->toDateTimeString() . '.xlsx');
     }
 }

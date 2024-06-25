@@ -101,12 +101,38 @@
                                     </div>
                                 </div>
                             </div>
-                            <button
-                                type="submit"
-                                class="bg-primary text-gray-50 text-lg py-2 rounded-lg"
-                            >
-                                Proses Laporan
-                            </button>
+                            <div class="flex gap-2 justify-center">
+                                <button
+                                    type="button"
+                                    class="bg-yellow-600 text-gray-50 text-lg py-2 rounded-lg"
+                                    @click="printJs()"
+                                >
+                                    <p class="px-3">
+                                        <i class="fas fa-print"></i> Print
+                                        Report
+                                    </p>
+                                </button>
+                                <a
+                                    href="/hris/laporan/laporan-karyawan"
+                                    target="_blank"
+                                    class="bg-primary text-gray-50 text-lg py-2 rounded-lg"
+                                >
+                                    <p class="px-3">
+                                        <i class="fas fa-file-export"></i>
+                                        Export Report Excel
+                                    </p>
+                                </a>
+                                <button
+                                    type="button"
+                                    class="bg-primary text-gray-50 text-lg py-2 rounded-lg"
+                                    @click="printJs()"
+                                >
+                                    <p class="px-3">
+                                        <i class="fas fa-file-export"></i>
+                                        Export Report PDF
+                                    </p>
+                                </button>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -121,6 +147,7 @@ import DashboardLayout from "../Layouts/DashboardLayout.vue";
 import TitlePages from "../Widgets/TitlePages.vue";
 import ButtonLapData from "../Widgets/ButtonLapData.vue";
 import { router, useForm } from "@inertiajs/vue3";
+import printJS from "print-js";
 
 export default {
     data() {
@@ -152,10 +179,32 @@ export default {
             this.modal = !this.modal;
         },
         submitLaporanKaryawan() {
-            router.post(
-                "/hris/laporan/laporan-karyawan",
-                this.laporanKaryawanForm
-            );
+            return router.get("/hris/laporan/laporan-karyawan");
+        },
+        printJs() {
+            printJS({
+                printable: [
+                    {
+                        name: "John Doe",
+                        email: "john@doe.com",
+                        phone: "111-111-1111",
+                    },
+                    {
+                        name: "Barry Allen",
+                        email: "barry@flash.com",
+                        phone: "222-222-2222",
+                    },
+                    {
+                        name: "Cool Dude",
+                        email: "cool@dude.com",
+                        phone: "333-333-3333",
+                    },
+                ],
+                type: "json",
+                properties: ["name", "email", "phone"],
+                header: '<h3 class="custom-h3">My custom header</h3>',
+                style: ".custom-h3 { color: red; }",
+            });
         },
     },
     layout: DashboardLayout,

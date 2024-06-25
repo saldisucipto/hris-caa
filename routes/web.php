@@ -11,7 +11,7 @@ use App\Models\AnalisisPengunjung;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Hris\LaporanController;
 use App\Http\Controllers\Hris\LaporanKaryawanController;
-
+use App\Http\Middleware\DisableInertia;
 
 // auth route
 Route::match(['get', 'post'], '/login', [AuthController::class, 'login'])->name('login');
@@ -76,7 +76,7 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
     Route::prefix('/laporan')->group(function () {
         // karyawan
         Route::get('/karyawan', [LaporanKaryawanController::class, 'laporanKaryawan']);
-        Route::post('/laporan-karyawan', [LaporanController::class, 'laporan_karyawan']);
+        Route::get('/laporan-karyawan', [LaporanController::class, 'laporan_karyawan']);
     });
 });
 
