@@ -46,8 +46,9 @@
                     <hr />
                     <div class="flex flex-col">
                         <form
+                            action="/hris/laporan/laporan-karyawan"
                             class="flex flex-col gap-2"
-                            @submit.prevent="submitLaporanKaryawan()"
+                            method="get"
                         >
                             <div class="flex gap-2 justify-between">
                                 <div class="flex flex-1 flex-col gap-2">
@@ -57,6 +58,7 @@
                                     <select
                                         class="py-2 border rounded-lg focus:outline-none"
                                         v-model="laporanKaryawanForm.company_id"
+                                        name="company_id"
                                     >
                                         <option
                                             v-for="company in this.company"
@@ -79,6 +81,7 @@
                                                     v-model="
                                                         laporanKaryawanForm.periode_awal
                                                     "
+                                                    name="periode_awal"
                                                 />
                                             </div>
                                         </div>
@@ -95,6 +98,7 @@
                                                     v-model="
                                                         laporanKaryawanForm.periode_akhir
                                                     "
+                                                    name="periode_akhir"
                                                 />
                                             </div>
                                         </div>
@@ -112,16 +116,15 @@
                                         Report
                                     </p>
                                 </button>
-                                <a
-                                    href="/hris/laporan/laporan-karyawan"
-                                    target="_blank"
+                                <button
+                                    type="submit"
                                     class="bg-primary text-gray-50 text-lg py-2 rounded-lg"
                                 >
                                     <p class="px-3">
                                         <i class="fas fa-file-export"></i>
                                         Export Report Excel
                                     </p>
-                                </a>
+                                </button>
                                 <button
                                     type="button"
                                     class="bg-primary text-gray-50 text-lg py-2 rounded-lg"
