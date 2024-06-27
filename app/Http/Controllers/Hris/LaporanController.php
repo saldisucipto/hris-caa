@@ -23,8 +23,6 @@ class LaporanController extends Controller
     // Laporan Karyawan
     function laporan_karyawan(Request $request)
     {
-        $data = $request->all();
-        dd($data);
-        return Excel::download(new EmployeExport, 'Data Karyawan ' . Carbon::now('Asia/Jakarta')->toDateTimeString() . '.xlsx');
+        return Excel::download(new EmployeExport($request->company_id, $request->status_karyawan), 'Data Karyawan ' . Carbon::now('Asia/Jakarta')->toDateTimeString() . '.xlsx');
     }
 }

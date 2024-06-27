@@ -3,17 +3,30 @@
 namespace App\Exports;
 
 use App\Models\Employee;
-use Maatwebsite\Excel\Concerns\FromCollection;
+
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 
-class EmployeExport implements FromCollection, WithHeadings
+class EmployeExport implements FromQuery, WithHeadings
 {
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public function collection()
+    public string $company;
+    public string $status;
+    function __construct(string $company, string $status)
     {
-        return Employee::all();
+        $this->company = $company;
+        $this->status = $status;
+    }
+
+
+    public function query()
+    {
+        if ($this->company == 'all') {
+            return Employee::query()->where('status_employee', '!=', 'resign');
+        } elseif ($this->status == 'all') {
+            return Employee::where('status_employee', '!=', 'resign')->where('id_company', '=', $this->company);
+        } else {
+            return Employee::where('status_employee', '=', $this->status)->where('id_company', '=', $this->company);
+        }
     }
 
     public function headings(): array

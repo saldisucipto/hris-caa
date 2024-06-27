@@ -47,7 +47,7 @@
                     <div class="flex flex-col">
                         <form
                             action="/hris/laporan/laporan-karyawan"
-                            class="flex flex-col gap-2"
+                            class="flex flex-col gap-10"
                             method="get"
                         >
                             <div class="flex gap-2 justify-between">
@@ -57,9 +57,11 @@
                                     >
                                     <select
                                         class="py-2 border rounded-lg focus:outline-none"
-                                        v-model="laporanKaryawanForm.company_id"
                                         name="company_id"
                                     >
+                                        <option selected value="all">
+                                            All Employee
+                                        </option>
                                         <option
                                             v-for="company in this.company"
                                             :value="company.id"
@@ -68,39 +70,30 @@
                                         </option>
                                     </select>
                                 </div>
-                                <div class="flex flex-1 gap-2">
+                                <div class="flex-1 gap-2">
                                     <div class="flex flex-col justify-center">
                                         <div class="flex flex-col gap-2">
                                             <label class="font-base text-lg"
-                                                >Awal Periode</label
+                                                >Status Karyawan
+                                            </label>
+
+                                            <select
+                                                class="py-2 border rounded-lg focus:outline-none uppercase"
+                                                name="status_karyawan"
                                             >
-                                            <div class="  ">
-                                                <input
-                                                    class="p-2 border rounded-lg focus:outline-none"
-                                                    type="date"
-                                                    v-model="
-                                                        laporanKaryawanForm.periode_awal
-                                                    "
-                                                    name="periode_awal"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="flex flex-col">
-                                        <div class="flex flex-col gap-2">
-                                            <label class="font-base text-lg"
-                                                >Akhir Periode</label
-                                            >
-                                            <div class="  ">
-                                                <input
-                                                    class="p-2 border rounded-lg focus:outline-none"
-                                                    type="date"
-                                                    v-model="
-                                                        laporanKaryawanForm.periode_akhir
-                                                    "
-                                                    name="periode_akhir"
-                                                />
-                                            </div>
+                                                <option selected value="all">
+                                                    All Employee
+                                                </option>
+                                                <option
+                                                    class="uppercase"
+                                                    v-for="status in status_karyawan"
+                                                    :value="status.status"
+                                                >
+                                                    <span class="mx-2">{{
+                                                        status.status
+                                                    }}</span>
+                                                </option>
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -127,7 +120,7 @@
                                 </button>
                                 <button
                                     type="button"
-                                    class="bg-primary text-gray-50 text-lg py-2 rounded-lg"
+                                    class="bg-green-600 text-gray-50 text-lg py-2 rounded-lg"
                                     @click="printJs()"
                                 >
                                     <p class="px-3">
@@ -156,6 +149,17 @@ export default {
     data() {
         return {
             modal: false,
+            status_karyawan: [
+                {
+                    status: "pkwt",
+                },
+                {
+                    status: "pkwtt",
+                },
+                {
+                    status: "resign",
+                },
+            ],
         };
     },
     setup() {
