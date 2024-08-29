@@ -75,7 +75,7 @@ Route::prefix('/hris')->middleware('auth')->group(function () {
     // laporan
     Route::prefix('/laporan')->group(function () {
         // karyawan
-        Route::get('/karyawan', [LaporanKaryawanController::class, 'laporanKaryawan']);
+        Route::get('/karyawan', [LaporanController::class, 'laporanKaryawan']);
         Route::get('/laporan-karyawan', [LaporanController::class, 'laporan_karyawan']);
     });
 });
